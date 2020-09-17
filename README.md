@@ -1,6 +1,6 @@
 # MobMQ
 
-<img src="document/logo.jpg" weight="150px" height="150px"/>
+<img src="document/logo.jpg" weight="300px" height="300px"/>
 
 <b>Mob MQ</b> Distributed messaging and streaming platform with low-latency, high performance and reliability,
  trillion-level capacity and flexible scalability.
