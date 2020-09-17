@@ -1,4 +1,4 @@
-# Mixmicro-MobMQ
+# MobMQ
 
 <img src="document/logo.png" weight="150px" height="150px"/>
 
