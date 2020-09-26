@@ -7,7 +7,7 @@
     <groupId>xyz.vopen.framework</groupId>
     <artifactId>mixmicro-job</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <modules>
         <module>common</module>
         <module>transport</module>
@@ -16,8 +16,10 @@
         <module>bootstrap</module>
     </modules>
 
+    <name>Mixmicro Job</name>
 
     <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
         <java.version>1.8</java.version>
 
         <guava.version>20.0</guava.version>
