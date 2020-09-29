@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mixmicro-job-core</artifactId>
+    <artifactId>mixmicro-scheduler-core</artifactId>
     <name>Mixmicro Scheduler Core</name>
 
 

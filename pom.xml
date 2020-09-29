@@ -10,7 +10,6 @@
     <version>${revision}</version>
     <modules>
         <module>common</module>
-        <module>transport</module>
         <module>core</module>
         <module>example</module>
         <module>bootstrap</module>
@@ -24,6 +23,7 @@
         <revision>1.0.0-SNAPSHOT</revision>
         <java.version>1.8</java.version>
 
+        <spring.boot.version>2.2.2.RELEASE</spring.boot.version>
         <guava.version>20.0</guava.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-io.version>2.6</commons-io.version>
@@ -49,7 +49,51 @@
     </properties>
 
     <dependencyManagement>
+
         <dependencies>
+
+            <!-- Spring Boot Dependency  -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-scheduler-agent</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-scheduler-spring-boot-start</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-scheduler-bootstrap</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-scheduler-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-scheduler-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-scheduler-example</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -183,6 +227,26 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+    </dependencies>
+
 
     <build>
         <defaultGoal>package</defaultGoal>

@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mixmicro-job-example</artifactId>
+    <artifactId>mixmicro-scheduler-example</artifactId>
     <name>Mixmicro Scheduler Example</name>
 
 </project>
