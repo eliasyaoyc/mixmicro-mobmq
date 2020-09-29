@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mixmicro-scheduler-spring-boot-start</artifactId>
+    <name>Mixmicro Scheduler Spring-boot start</name>
 
 
 </project>

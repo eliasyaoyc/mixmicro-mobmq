@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mixmicro-job-core</artifactId>
-    <name>Mixmicro Job Core</name>
+    <name>Mixmicro Scheduler Core</name>
 
 
 </project>
