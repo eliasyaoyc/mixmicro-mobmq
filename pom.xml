@@ -43,7 +43,6 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.21</slf4j.version>
         <junit.version>4.12</junit.version>
-        <scalatest.version>2.2.6</scalatest.version>
 
         <profile.active>dev</profile.active>
     </properties>
@@ -145,30 +144,6 @@
                 <version>${curator.version}</version>
             </dependency>
 
-            <!-- json4s -->
-            <dependency>
-                <groupId>org.json4s</groupId>
-                <artifactId>json4s-core_${scala.binary.version}</artifactId>
-                <version>${json4s.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.json4s</groupId>
-                <artifactId>json4s-jackson_${scala.binary.version}</artifactId>
-                <version>${json4s.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.module</groupId>
-                <artifactId>jackson-module-scala_${scala.binary.version}</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
 
             <!-- jetty -->
             <dependency>
@@ -218,13 +193,6 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
-
-            <dependency>
-                <groupId>org.scalatest</groupId>
-                <artifactId>scalatest_${scala.binary.version}</artifactId>
-                <version>${scalatest.version}</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -257,34 +225,5 @@
                 </excludes>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>scala-maven-plugin</artifactId>
-                <version>3.2.2</version>
-                <executions>
-                    <execution>
-                        <id>eclipse-add-source</id>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>scala-compile-first</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>attach-scaladocs</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>doc-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 </project>

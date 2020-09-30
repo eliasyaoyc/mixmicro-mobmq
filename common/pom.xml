@@ -13,4 +13,11 @@
     <artifactId>mixmicro-scheduler-common</artifactId>
     <name>Mixmicro Scheduler Common</name>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
 </project>
