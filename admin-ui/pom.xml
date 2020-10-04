@@ -10,7 +10,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mixmicro-scheduler-example</artifactId>
-    <name>Mixmicro Scheduler Example Module</name>
+    <artifactId>mixmicro-scheduler-admin-ui</artifactId>
+    <name>Mixmicro Scheduler Admin UI Module</name>
+
 
 </project>

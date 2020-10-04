@@ -10,8 +10,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mixmicro-scheduler-spring-boot-start</artifactId>
-    <name>Mixmicro Scheduler Spring-boot start</name>
+    <artifactId>mixmicro-scheduler-spring-boot-starter</artifactId>
+    <name>Mixmicro Scheduler Spring-boot Starter Module</name>
 
 
 </project>

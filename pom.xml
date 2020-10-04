@@ -13,8 +13,10 @@
         <module>core</module>
         <module>example</module>
         <module>bootstrap</module>
-        <module>spring-boot-start</module>
+        <module>spring-boot-starter</module>
         <module>agent</module>
+        <module>admin-ui</module>
+        <module>admin</module>
     </modules>
 
     <name>Mixmicro Scheduler</name>
