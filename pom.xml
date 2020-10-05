@@ -14,9 +14,10 @@
         <module>example</module>
         <module>bootstrap</module>
         <module>spring-boot-starter</module>
-        <module>agent</module>
         <module>admin-ui</module>
         <module>admin</module>
+        <module>client</module>
+        <module>extension</module>
     </modules>
 
     <name>Mixmicro Scheduler</name>
@@ -62,9 +63,10 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- Core Dependency  -->
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-agent</artifactId>
+                <artifactId>mixmicro-scheduler-extension</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -94,6 +96,17 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-scheduler-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-scheduler-admin</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -214,6 +227,17 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <!-- Logback Dependency -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
         </dependency>
     </dependencies>
 
