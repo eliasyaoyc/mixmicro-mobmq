@@ -42,6 +42,7 @@
 
         <servlet.version>4.0.1</servlet.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
+        <akka.version>2.6.4</akka.version>
 
         <commons-logging.version>1.2</commons-logging.version>
         <log4j.version>1.2.17</log4j.version>
@@ -49,6 +50,7 @@
         <junit.version>4.12</junit.version>
 
         <profile.active>dev</profile.active>
+
     </properties>
 
     <dependencyManagement>
@@ -213,6 +215,23 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <!-- akka remote -->
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-remote_2.13</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-serialization-jackson_2.13</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-slf4j_2.13</artifactId>
+                <version>${akka.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
