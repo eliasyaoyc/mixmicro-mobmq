@@ -3,19 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>mixmicro-scheduler-spring-boot-starter</artifactId>
+        <artifactId>mixmicro-neptune-spring-boot-starter</artifactId>
         <groupId>xyz.vopen.framework</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
+        <relativePath>../</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mixmicro-client-spring-boot-starter</artifactId>
-    <name>Mixmicro Client Spring Boot Starter Module</name>
+    <name>Neptune Client Spring Boot Starter Module</name>
 
     <dependencies>
         <dependency>
             <groupId>xyz.vopen.framework</groupId>
-            <artifactId>mixmicro-scheduler-client</artifactId>
+            <artifactId>mixmicro-neptune-client</artifactId>
         </dependency>
     </dependencies>
 </project>

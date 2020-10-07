@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>mixmicro-scheduler</artifactId>
+        <artifactId>mixmicro-neptune</artifactId>
         <groupId>xyz.vopen.framework</groupId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
-    <artifactId>mixmicro-scheduler-extension</artifactId>
-    <name>Mixmicro Scheduler Extension Module</name>
+    <artifactId>mixmicro-neptune-extension</artifactId>
+    <name>Neptune Extension Module</name>
 
 </project>

@@ -3,22 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>mixmicro-scheduler</artifactId>
+        <artifactId>mixmicro-neptune</artifactId>
         <groupId>xyz.vopen.framework</groupId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mixmicro-scheduler-admin</artifactId>
-    <name>Mixmicro Scheduler Admin Module</name>
+    <artifactId>mixmicro-neptune-admin</artifactId>
+    <name>Neptune Admin Module</name>
 
 
     <dependencies>
         <!-- Core Dependencies -->
         <dependency>
             <groupId>xyz.vopen.framework</groupId>
-            <artifactId>mixmicro-scheduler-common</artifactId>
+            <artifactId>mixmicro-neptune-common</artifactId>
         </dependency>
 
         <dependency>

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>xyz.vopen.framework</groupId>
-    <artifactId>mixmicro-scheduler</artifactId>
+    <artifactId>mixmicro-neptune</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
     <modules>
@@ -21,7 +21,7 @@
         <module>repository</module>
     </modules>
 
-    <name>Mixmicro Scheduler</name>
+    <name>Neptune</name>
 
     <properties>
         <revision>1.0.0-SNAPSHOT</revision>
@@ -69,50 +69,50 @@
             <!-- Core Dependency  -->
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-extension</artifactId>
+                <artifactId>mixmicro-neptune-extension</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-spring-boot-start</artifactId>
+                <artifactId>mixmicro-neptune-spring-boot-start</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-bootstrap</artifactId>
+                <artifactId>mixmicro-neptune-bootstrap</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-common</artifactId>
+                <artifactId>mixmicro-neptune-common</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-core</artifactId>
+                <artifactId>mixmicro-neptune-core</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-example</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-client</artifactId>
+                <artifactId>mixmicro-neptune-example</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-admin</artifactId>
+                <artifactId>mixmicro-neptune-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-neptune-admin</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-scheduler-repository</artifactId>
+                <artifactId>mixmicro-neptune-repository</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -281,5 +281,16 @@
                 </excludes>
             </resource>
         </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

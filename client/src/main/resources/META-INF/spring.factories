@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  xyz.vopen.framework.scheduler.client.autoconfigure.SchedulerAutoConfiguration
+  xyz.vopen.framework.neptune.client.autoconfigure.NeptuneAutoConfiguration
