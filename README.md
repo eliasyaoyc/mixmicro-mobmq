@@ -1,11 +1,11 @@
-# Mixmicro Scheduler
-<b> Mixmicro Scheduler </b>> is a distributed job scheduling that supports CRON, API, fixed frequency，fixed delay and other scheduling strategies.
+# Neptune
+<b> Neptune </b> is a distributed job scheduling that supports CRON, API, fixed frequency，fixed delay and other scheduling strategies.
 
 ## Overview
 
 > Design Architecture
 
-![Scheduler Architecture](document/architecture.jpg) 
+![Neptune Architecture](document/architecture.jpg) 
 
 ## Requirements
 Java version 1.8+，you can use below command to check. 
@@ -36,14 +36,14 @@ $ tail -f logs/start.log
 
 ## Building from Source
 
-You don’t need to build from source to use `Mixmicro Scheduler` (binaries in [github](https://github.com/mixmicro/mixmicro-scheduler)), 
+You don’t need to build from source to use `Neptune` (binaries in [github](https://github.com/mixmicro/neptune)), 
 but if you want to try out the latest and greatest, 
 `Mixmicro Scheduler` can be easily built with the maven wrapper. You also need JDK 1.8.
 
 *First* : git clone source from gitlab
  
 ```bash
-$ git clone https://github.com/mixmicro/mixmicro-scheduler
+$ git clone https://github.com/mixmicro/neptune
 ```
 
 *Second* : build
