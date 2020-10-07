@@ -1,6 +1,7 @@
 package xyz.vopen.framework.scheduler.core.rpc.akka;
 
 import xyz.vopen.framework.scheduler.common.time.Time;
+import xyz.vopen.framework.scheduler.core.configuration.AkkaOptions;
 import xyz.vopen.framework.scheduler.core.configuration.Configuration;
 
 import javax.validation.constraints.NotNull;
@@ -53,7 +54,15 @@ public class AkkaRpcServiceConfiguration {
   }
 
   public static AkkaRpcServiceConfiguration fromConfiguration(Configuration configuration) {
-    return null;
+    final Time timeout = AkkaUtils.getTimeoutAsTime(configuration);
+
+    final long maximumFrameSize = AkkaRpcServiceUtils.extractMaximumFrameSize(configuration);
+
+    final boolean captureAskCallStacks =
+        (boolean) configuration.get(AkkaOptions.CAPTURE_ASK_CALLSTACK);
+
+    return new AkkaRpcServiceConfiguration(
+        configuration, timeout, maximumFrameSize, captureAskCallStacks);
   }
 
   public static AkkaRpcServiceConfiguration defaultConfiguration() {

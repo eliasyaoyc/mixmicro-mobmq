@@ -20,7 +20,7 @@ public class AkkaRpcService implements RpcService {
 
 
   @VisibleForTesting
-  public AkkaRpcService(final ActorSystem actorSystem,final Akkarpcser){
+  public AkkaRpcService(final ActorSystem actorSystem,final AkkaRpcServiceConfiguration configuration){
 
   }
 }

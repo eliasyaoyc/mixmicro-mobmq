@@ -1,5 +1,8 @@
 package xyz.vopen.framework.scheduler.core.rpc.akka;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import xyz.vopen.framework.scheduler.core.configuration.AkkaOptions;
 import xyz.vopen.framework.scheduler.core.configuration.Configuration;
 
 /**
@@ -16,10 +19,9 @@ public class AkkaRpcServiceUtils {
   private static final String MAXIMUM_FRAME_SIZE_PATH = "akka.remote.netty.tcp.maximum-frame-size";
 
   public static long extractMaximumFrameSize(Configuration configuration) {
-    //    String maxFrameSizeStr = configuration.getString(AkkaOptions.FRAMESIZE);
-    //    String akkaConfigStr = String.format(SIMPLE_AKKA_CONFIG_TEMPLATE, maxFrameSizeStr);
-    //    Config akkaConfig = ConfigFactory.parseString(akkaConfigStr);
-    //    return akkaConfig.getBytes(MAXIMUM_FRAME_SIZE_PATH);
-    return 0;
+    String maxFrameSizeStr = configuration.getString(AkkaOptions.FRAMESIZE);
+    String akkaConfigStr = String.format(SIMPLE_AKKA_CONFIG_TEMPLATE, maxFrameSizeStr);
+    Config akkaConfig = ConfigFactory.parseString(akkaConfigStr);
+    return akkaConfig.getBytes(MAXIMUM_FRAME_SIZE_PATH);
   }
 }

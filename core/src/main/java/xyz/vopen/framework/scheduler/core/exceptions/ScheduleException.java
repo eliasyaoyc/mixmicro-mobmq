@@ -1,4 +1,4 @@
-package xyz.vopen.framework.scheduler.core.exception;
+package xyz.vopen.framework.scheduler.core.exceptions;
 
 import javax.validation.constraints.NotNull;
 
