@@ -24,7 +24,7 @@ public final class RunAsync {
     return runnable;
   }
 
-  public long getAtTimeNanos() {
+  public long getTimeNanos() {
     return atTimeNanos;
   }
 }

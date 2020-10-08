@@ -13,6 +13,8 @@ import xyz.vopen.framework.neptune.core.configuration.Configuration;
  */
 public class AkkaRpcServiceUtils {
 
+  static final String SUPERVISOR_NAME = "rpc";
+
   private static final String SIMPLE_AKKA_CONFIG_TEMPLATE =
       "akka {remote {netty.tcp {maximum-frame-size = %s}}}";
 
