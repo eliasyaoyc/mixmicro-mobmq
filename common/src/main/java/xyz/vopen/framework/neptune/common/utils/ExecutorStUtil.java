@@ -8,13 +8,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * {@link ExecutorUtil} Utilities for {@link java.util.concurrent.Executor}.
+ * {@link ExecutorStUtil} Utilities for {@link java.util.concurrent.Executor} shutdown gracefully.
  *
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
  * @version ${project.version} - 2020/10/7
  */
-public class ExecutorUtil {
-  private static final Logger logger = LoggerFactory.getLogger(ExecutorUtil.class);
+public class ExecutorStUtil {
+  private static final Logger logger = LoggerFactory.getLogger(ExecutorStUtil.class);
 
   /**
    * Gracefully shutdown the given {@link ExecutorService}. The call waits the given timeout that
@@ -56,7 +56,6 @@ public class ExecutorUtil {
           wasInterrupted = true;
 
           Thread.currentThread().interrupt();
-          ;
         }
 
         timeLeft = endTime - System.currentTimeMillis();

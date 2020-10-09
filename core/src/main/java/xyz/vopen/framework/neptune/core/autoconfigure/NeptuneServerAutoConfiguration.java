@@ -24,4 +24,5 @@ import static xyz.vopen.framework.neptune.core.autoconfigure.NeptuneServerProper
 public class NeptuneServerAutoConfiguration {
   private static final Logger logger =
       LoggerFactory.getLogger(NeptuneServerAutoConfiguration.class);
+
 }

@@ -14,7 +14,7 @@ import scala.reflect.ClassTag$;
 import xyz.vopen.framework.neptune.common.annoations.VisibleForTesting;
 import xyz.vopen.framework.neptune.common.utils.AutoCloseableAsync;
 import xyz.vopen.framework.neptune.common.utils.ExecutorThreadFactory;
-import xyz.vopen.framework.neptune.common.utils.ExecutorUtil;
+import xyz.vopen.framework.neptune.common.utils.ExecutorStUtil;
 import xyz.vopen.framework.neptune.common.utils.TimeUtil;
 import xyz.vopen.framework.neptune.core.concurrent.ActorSystemScheduledExecutorAdapter;
 import xyz.vopen.framework.neptune.core.concurrent.FutureUtil;
@@ -452,7 +452,7 @@ public class AkkaRpcService implements RpcService {
 
     @Override
     public CompletableFuture<Void> closeAsync() {
-      return ExecutorUtil.nonBlockingShutdown(30L, TimeUnit.SECONDS, terminationFutureExecutor);
+      return ExecutorStUtil.nonBlockingShutdown(30L, TimeUnit.SECONDS, terminationFutureExecutor);
     }
   }
 }

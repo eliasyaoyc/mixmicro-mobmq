@@ -112,7 +112,6 @@ class AkkaRpcActor<T extends RpcEndpoint & RpcGateway> extends AbstractActor {
   private void handleMessage(final Object message) {
     if (state.isRunning()) {
       mainThreadValidator.enterMainThread();
-      ;
 
       try {
         handleRpcMessage(message);
