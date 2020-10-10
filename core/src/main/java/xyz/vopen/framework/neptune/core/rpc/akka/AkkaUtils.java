@@ -231,93 +231,115 @@ public class AkkaUtils {
     String jvmExitOnFatalError =
         configuration.getBoolean(AkkaOptions.JVM_EXIT_ON_FATAL_ERROR) ? "on" : "off";
     String logLifecycleEvents = lifecycleEvents ? "on" : "off";
+    String supervisorStrategy = EscalatingSupervisorStrategy.class.getCanonicalName();
+    String logLevel = getLogLevel();
 
     String configString =
-        "akka {"
-            + " daemonic = off"
-            + ""
-            + " loggers = [\"akka.event.slf4j.Slf4jLogger\"]"
-            + " logging-filter = \"akka.event.slf4j.Slf4jLoggingFilter\""
-            + " log-config-on-start = off"
-            + ""
+        "akka {\n"
+            + " daemonic = off\n"
+            + "\n"
+            + " loggers = [\"akka.event.slf4j.Slf4jLogger\"]\n"
+            + " logging-filter = \"akka.event.slf4j.Slf4jLoggingFilter\"\n"
+            + " log-config-on-start = off\n"
+            + "\n"
             + " jvm-exit-on-fatal-error = "
             + jvmExitOnFatalError
-            + ""
-            + " serialize-messages = off"
-            + ""
+            + "\n"
+            + "\n"
+            + " serialize-messages = off\n"
+            + "\n"
             + " loglevel = "
-            + getLogLevel()
-            + " stdout-loglevel = OFF"
-            + ""
+            + logLevel
+            + "\n"
+            + " stdout-loglevel = OFF\n"
+            + "\n"
             + " log-dead-letters = "
             + logLifecycleEvents
+            + "\n"
             + " log-dead-letters-during-shutdown = "
             + logLifecycleEvents
-            + ""
-            + " actor {"
+            + "\n"
+            + "\n"
+            + " actor {\n"
             + "   guardian-supervisor-strategy = "
-            + EscalatingSupervisorStrategy.class.getCanonicalName()
-            + ""
-            + "   warn-about-java-serializer-usage = off"
-            + ""
-            + "   default-dispatcher {"
+            + supervisorStrategy
+            + "\n"
+            + "\n"
+            + "   warn-about-java-serializer-usage = off\n"
+            + "\n"
+            + "   default-dispatcher {\n"
             + "     throughput = "
             + akkaThroughput
-            + "   }"
-            + ""
-            + "   supervisor-dispatcher {"
-            + "     type = Dispatcher"
-            + "     executor = \"thread-pool-executor\""
-            + "     thread-pool-executor {"
-            + "       core-pool-size-min = 1"
-            + "       core-pool-size-max = 1"
-            + "     }"
-            + "   }"
-            + " }"
+            + "\n"
+            + "   }\n"
+            + "\n"
+            + "   supervisor-dispatcher {\n"
+            + "     type = Dispatcher\n"
+            + "     executor = \"thread-pool-executor\"\n"
+            + "     thread-pool-executor {\n"
+            + "       core-pool-size-min = 1\n"
+            + "       core-pool-size-max = 1\n"
+            + "     }\n"
+            + "   }\n"
+            + " }\n"
             + "}";
-    return ConfigFactory.parseString(configString);
+    Config config = ConfigFactory.parseString(configString);
+    return config;
   }
 
   public static Config getThreadPoolExecutorConfig(
       BootstrapTools.FixedThreadPoolExecutorConfiguration configuration) {
 
+    int threadPriority = configuration.getThreadPriority();
+    int minNumThreads = configuration.getMinNumThreads();
+    int maxNumThreads = configuration.getMaxNumThreads();
+
     String configString =
-        "akka {"
-            + "  actor {"
-            + "    default-dispatcher {"
-            + "      type = akka.dispatch.PriorityThreadsDispatcher"
-            + "      executor = \"thread-pool-executor\""
+        "akka {\n"
+            + "  actor {\n"
+            + "    default-dispatcher {\n"
+            + "      type = akka.dispatch.PriorityThreadsDispatcher\n"
+            + "      executor = \"thread-pool-executor\"\n"
             + "      thread-priority = "
-            + configuration.getThreadPriority()
-            + "      thread-pool-executor {"
+            + threadPriority
+            + "\n"
+            + "      thread-pool-executor {\n"
             + "        core-pool-size-min = "
-            + configuration.getMinNumThreads()
+            + minNumThreads
+            + "\n"
             + "        core-pool-size-max = "
-            + configuration.getMaxNumThreads()
-            + "      }"
-            + "    }"
-            + "  }"
+            + maxNumThreads
+            + "\n"
+            + "      }\n"
+            + "    }\n"
+            + "  }\n"
             + "}";
     return ConfigFactory.parseString(configString);
   }
 
   public static Config getForkJoinExecutorConfig(
       BootstrapTools.ForkJoinExecutorConfiguration configuration) {
+    double parallelismFactor = configuration.getParallelismFactor();
+    int minParallelism = configuration.getMinParallelism();
+    int maxParallelism = configuration.getMaxParallelism();
     String configString =
-        "akka {"
-            + "  actor {"
-            + "    default-dispatcher {"
-            + "      executor = \"fork-join-executor\""
-            + "      fork-join-executor {"
+        "akka {\n"
+            + "  actor {\n"
+            + "    default-dispatcher {\n"
+            + "      executor = \"fork-join-executor\"\n"
+            + "      fork-join-executor {\n"
             + "        parallelism-factor = "
-            + configuration.getParallelismFactor()
+            + parallelismFactor
+            + "\n"
             + "        parallelism-min = "
-            + configuration.getMinParallelism()
+            + minParallelism
+            + "\n"
             + "        parallelism-max = "
-            + configuration.getMaxParallelism()
-            + "      }"
-            + "    }"
-            + "  }"
+            + maxParallelism
+            + "\n"
+            + "      }\n"
+            + "    }\n"
+            + "  }\n"
             + "}";
     return ConfigFactory.parseString(configString);
   }
@@ -344,7 +366,7 @@ public class AkkaUtils {
       Duration pauseValue,
       String intervalParamName,
       Duration intervalValue) {
-    if (pauseValue.compareTo(intervalValue) > 0) {
+    if (pauseValue.compareTo(intervalValue) <= 0) {
       throw new IllegalConfigurationException(
           "%s [%s] must greater than %s [%s]",
           pauseParamName, pauseValue, intervalParamName, intervalValue);
@@ -431,85 +453,177 @@ public class AkkaUtils {
     double serverSocketWorkerPoolPoolSizeFactor =
         configuration.getDouble(AkkaOptions.SERVER_SOCKET_WORKER_POOL_SIZE_FACTOR);
 
+    //    String configString =
+    //        "akka {"
+    //            + "  actor {"
+    //            + "    provider = \"akka.remote.RemoteActorRefProvider\""
+    //            + "  }"
+    //            + ""
+    //            + "  remote {"
+    //            + "    startup-timeout = "
+    //            + startupTimeout
+    //            + ""
+    //            + "    transport-failure-detector{"
+    //            + "      acceptable-heartbeat-pause = "
+    //            + transportHeartbeatPause
+    //            + "      heartbeat-interval = "
+    //            + transportHeartbeatInterval
+    //            + "      threshold = "
+    //            + transportThreshold
+    //            + "    }"
+    //            + ""
+    //            + "    netty {"
+    //            + "      tcp {"
+    //            + "        transport-class = \"akka.remote.transport.netty.NettyTransport\""
+    //            + "        port = "
+    //            + externalPort
+    //            + "        bind-port = "
+    //            + port
+    //            + "        connection-timeout = "
+    //            + akkaTCPTimeout
+    //            + "        maximum-frame-size = "
+    //            + akkaFrameSize
+    //            + "        tcp-nodelay = on"
+    //            + ""
+    //            + "        client-socket-worker-pool {"
+    //            + "          pool-size-min = "
+    //            + clientSocketWorkerPoolPoolSizeMin
+    //            + "          pool-size-max = "
+    //            + clientSocketWorkerPoolPoolSizeMax
+    //            + "          pool-size-factor = "
+    //            + clientSocketWorkerPoolPoolSizeFactor
+    //            + "        }"
+    //            + ""
+    //            + "        server-socket-worker-pool {"
+    //            + "          pool-size-min = "
+    //            + serverSocketWorkerPoolPoolSizeMin
+    //            + "          pool-size-max = "
+    //            + serverSocketWorkerPoolPoolSizeMax
+    //            + "          pool-size-factor = "
+    //            + serverSocketWorkerPoolPoolSizeFactor
+    //            + "        }"
+    //            + "      }"
+    //            + "    }"
+    //            + ""
+    //            + "    log-remote-lifecycle-events = "
+    //            + logLifecycleEvents
+    //            + ""
+    //            + "    retry-gate-closed-for = {"
+    //            + retryGateClosedFor
+    //            + "\" ms\"}"
+    //            + "  }"
+    //            + "}";
+
     String configString =
-        "akka {"
-            + "  actor {"
-            + "    provider = \"akka.remote.RemoteActorRefProvider\""
-            + "  }"
-            + ""
-            + "  remote {"
+        "akka {\n"
+            + "  actor {\n"
+            + "    provider = \"akka.remote.RemoteActorRefProvider\"\n"
+            + "  }\n"
+            + "\n"
+            + "  remote {\n"
             + "    startup-timeout = "
             + startupTimeout
-            + ""
-            + "    transport-failure-detector{"
+            + "\n"
+            + "\n"
+            + "    transport-failure-detector{\n"
             + "      acceptable-heartbeat-pause = "
             + transportHeartbeatPause
+            + "\n"
             + "      heartbeat-interval = "
             + transportHeartbeatInterval
+            + "\n"
             + "      threshold = "
             + transportThreshold
-            + "    }"
-            + ""
-            + "    netty {"
-            + "      tcp {"
-            + "        transport-class = \"akka.remote.transport.netty.NettyTransport\""
+            + "\n"
+            + "    }\n"
+            + "\n"
+            + "    netty {\n"
+            + "      tcp {\n"
+            + "        transport-class = \"akka.remote.transport.netty.NettyTransport\"\n"
             + "        port = "
             + externalPort
+            + "\n"
             + "        bind-port = "
             + port
+            + "\n"
             + "        connection-timeout = "
             + akkaTCPTimeout
+            + "\n"
             + "        maximum-frame-size = "
             + akkaFrameSize
-            + "        tcp-nodelay = on"
-            + ""
-            + "        client-socket-worker-pool {"
+            + "\n"
+            + "        tcp-nodelay = on\n"
+            + "\n"
+            + "        client-socket-worker-pool {\n"
             + "          pool-size-min = "
             + clientSocketWorkerPoolPoolSizeMin
+            + "\n"
             + "          pool-size-max = "
             + clientSocketWorkerPoolPoolSizeMax
+            + "\n"
             + "          pool-size-factor = "
             + clientSocketWorkerPoolPoolSizeFactor
-            + "        }"
-            + ""
-            + "        server-socket-worker-pool {"
+            + "\n"
+            + "        }\n"
+            + "\n"
+            + "        server-socket-worker-pool {\n"
             + "          pool-size-min = "
             + serverSocketWorkerPoolPoolSizeMin
+            + "\n"
             + "          pool-size-max = "
             + serverSocketWorkerPoolPoolSizeMax
+            + "\n"
             + "          pool-size-factor = "
             + serverSocketWorkerPoolPoolSizeFactor
-            + "        }"
-            + "      }"
-            + "    }"
-            + ""
+            + "\n"
+            + "        }\n"
+            + "      }\n"
+            + "    }\n"
+            + "\n"
             + "    log-remote-lifecycle-events = "
             + logLifecycleEvents
-            + ""
-            + "    retry-gate-closed-for = {"
+            + "\n"
+            + "\n"
+            + "    retry-gate-closed-for = "
             + retryGateClosedFor
-            + "\" ms\"}"
-            + "  }"
-            + "}";
+            + "ms\n"
+            + "  }\n"
+            + "}\n";
 
     String effectiveHostname = "";
     if (normalizedExternalHostname != null && !normalizedExternalHostname.isEmpty()) {
       effectiveHostname = normalizedExternalHostname;
     }
 
+    //    String hostnameConfigString =
+    //        "akka {"
+    //            + "  remote {"
+    //            + "    netty {"
+    //            + "      tcp {"
+    //            + "        hostname = "
+    //            + effectiveHostname
+    //            + "        bind-hostname = "
+    //            + bindAddress
+    //            + "      }"
+    //            + "    }"
+    //            + "  }"
+    //            + "}";
     String hostnameConfigString =
-        "akka {"
-            + "  remote {"
-            + "    netty {"
-            + "      tcp {"
-            + "        hostname = "
+        "akka {\n"
+            + "  remote {\n"
+            + "    netty {\n"
+            + "      tcp {\n"
+            + "        hostname = \""
             + effectiveHostname
-            + "        bind-hostname = "
+            + "\"\n"
+            + "        bind-hostname = \""
             + bindAddress
-            + "      }"
-            + "    }"
-            + "  }"
+            + "\"\n"
+            + "      }\n"
+            + "    }\n"
+            + "  }\n"
             + "}";
+    String s = configString + hostnameConfigString;
     return ConfigFactory.parseString(configString + hostnameConfigString).resolve();
   }
 
