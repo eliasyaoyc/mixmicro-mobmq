@@ -1,13 +1,13 @@
 package xyz.vopen.framework.neptune.core.autoconfigure;
 
 import akka.actor.ActorSystem;
-import org.apache.flink.runtime.akka.AkkaUtils;
 import xyz.vopen.framework.neptune.common.time.Time;
 import xyz.vopen.framework.neptune.core.rpc.RpcEndpoint;
 import xyz.vopen.framework.neptune.core.rpc.RpcGateway;
 import xyz.vopen.framework.neptune.core.rpc.RpcService;
 import xyz.vopen.framework.neptune.core.rpc.akka.AkkaRpcService;
 import xyz.vopen.framework.neptune.core.rpc.akka.AkkaRpcServiceConfiguration;
+import xyz.vopen.framework.neptune.core.rpc.akka.AkkaUtils;
 
 /**
  * {@link RpcTest}
@@ -57,6 +57,7 @@ public class RpcTest {
     rpcService = new AkkaRpcService(actorSystem, AkkaRpcServiceConfiguration.defaultConfiguration());
 
     HelloEndpoint helloEndpoint = new HelloEndpoint(rpcService);
+    helloEndpoint.start();
     HelloGateway selfGateway = helloEndpoint.getSelfGateway(HelloGateway.class);
     String hello = selfGateway.hello();
     System.out.println(hello);

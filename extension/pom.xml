@@ -10,8 +10,20 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
+    <modules>
+        <module>agent</module>
+    </modules>
 
     <artifactId>mixmicro-neptune-extension</artifactId>
     <name>Neptune Extension Module</name>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-neptune-extension-agent</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

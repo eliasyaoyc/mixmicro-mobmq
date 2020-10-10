@@ -6,11 +6,13 @@ import akka.actor.Status;
 import akka.japi.pf.ReceiveBuilder;
 import akka.pattern.Patterns;
 import com.google.common.base.Preconditions;
-import org.apache.flink.types.Either;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.concurrent.duration.FiniteDuration;
 import scala.concurrent.impl.Promise;
+import scala.util.Either;
+import scala.util.Left;
+import scala.util.Right;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 import xyz.vopen.framework.neptune.common.utils.SerializedValue;
 import xyz.vopen.framework.neptune.core.concurrent.FutureUtil;
@@ -295,7 +297,7 @@ class AkkaRpcActor<T extends RpcEndpoint & RpcGateway> extends AbstractActor {
       if (serializedResult.isLeft()) {
         getSender().tell(new Status.Success(serializedResult.left()), getSelf());
       } else {
-        getSender().tell(new Status.Failure(serializedResult.right()), getSelf());
+        getSender().tell(new Status.Failure(serializedResult.right().get()), getSelf());
       }
     } else {
       getSender().tell(new Status.Success(response), getSelf());
@@ -318,7 +320,7 @@ class AkkaRpcActor<T extends RpcEndpoint & RpcGateway> extends AbstractActor {
               if (serializedResult.isLeft()) {
                 promise.success(serializedResult.left());
               } else {
-                promise.failure(serializedResult.right());
+                promise.failure(serializedResult.right().get());
               }
             } else {
               promise.success(value);
@@ -340,7 +342,7 @@ class AkkaRpcActor<T extends RpcEndpoint & RpcGateway> extends AbstractActor {
 
       long resultSize = serializedResult.getByteArray().length;
       if (resultSize > maximumFrameSize) {
-        return Either.Right(
+        return new Right(
             new RpcException(
                 "The method "
                     + methodName
@@ -350,10 +352,10 @@ class AkkaRpcActor<T extends RpcEndpoint & RpcGateway> extends AbstractActor {
                     + maximumFrameSize
                     + " ."));
       } else {
-        return Either.Left(serializedResult);
+        return new Left(serializedResult);
       }
     } catch (IOException e) {
-      return Either.Right(
+      return new Right(
           new RpcException("Failed to serialize the result for RPC call : " + methodName + ".", e));
     }
   }
@@ -396,8 +398,7 @@ class AkkaRpcActor<T extends RpcEndpoint & RpcGateway> extends AbstractActor {
       // schedule for later. send a new message after the delay, which will then be immediately
       // executed
       FiniteDuration delay = new FiniteDuration(delayNanos, TimeUnit.NANOSECONDS);
-      org.apache.flink.runtime.rpc.messages.RunAsync message =
-          new org.apache.flink.runtime.rpc.messages.RunAsync(runAsync.getRunnable(), timeToRun);
+      RunAsync message = new RunAsync(runAsync.getRunnable(), timeToRun);
 
       final Object envelopedSelfMessage = envelopeSelfMessage(message);
 

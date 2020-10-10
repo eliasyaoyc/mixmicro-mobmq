@@ -5,7 +5,7 @@ import akka.pattern.Patterns;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xyz.vopen.framework.neptune.common.exception.NeptuneRuntimeException;
+import xyz.vopen.framework.neptune.common.exceptions.NeptuneRuntimeException;
 import xyz.vopen.framework.neptune.common.time.Time;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 import xyz.vopen.framework.neptune.common.utils.SerializedValue;

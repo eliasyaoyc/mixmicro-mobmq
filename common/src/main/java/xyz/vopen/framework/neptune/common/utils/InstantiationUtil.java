@@ -3,7 +3,7 @@ package xyz.vopen.framework.neptune.common.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.vopen.framework.neptune.common.annoations.Internal;
-import xyz.vopen.framework.neptune.common.exception.NeptuneException;
+import xyz.vopen.framework.neptune.common.exceptions.NeptuneException;
 
 import java.io.*;
 import java.lang.reflect.Constructor;

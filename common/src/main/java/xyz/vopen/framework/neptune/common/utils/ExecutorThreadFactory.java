@@ -134,7 +134,7 @@ public class ExecutorThreadFactory implements ThreadFactory {
    * <p>This guarantees that critical exceptions are not accidentally lost and leave the system
    * running in an inconsistent state.
    */
-  static final class FatalExitExceptionHandler implements Thread.UncaughtExceptionHandler {
+  public static final class FatalExitExceptionHandler implements Thread.UncaughtExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(FatalExitExceptionHandler.class);
 
     public static final FatalExitExceptionHandler INSTANCE = new FatalExitExceptionHandler();

@@ -4,7 +4,6 @@ import akka.actor.*;
 import akka.dispatch.Futures;
 import akka.pattern.Patterns;
 import com.google.common.base.Preconditions;
-import org.apache.flink.runtime.akka.AkkaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.Option;

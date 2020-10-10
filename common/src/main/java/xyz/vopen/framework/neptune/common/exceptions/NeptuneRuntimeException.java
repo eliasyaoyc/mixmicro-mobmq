@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.common.exception;
+package xyz.vopen.framework.neptune.common.exceptions;
 
 import javax.validation.constraints.NotNull;
 

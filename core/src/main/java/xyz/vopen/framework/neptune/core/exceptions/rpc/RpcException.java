@@ -1,6 +1,6 @@
 package xyz.vopen.framework.neptune.core.exceptions.rpc;
 
-import xyz.vopen.framework.neptune.common.exception.NeptuneException;
+import xyz.vopen.framework.neptune.common.exceptions.NeptuneException;
 
 import javax.validation.constraints.NotNull;
 
