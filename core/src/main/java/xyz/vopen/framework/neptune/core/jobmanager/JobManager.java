@@ -11,4 +11,8 @@ import org.slf4j.LoggerFactory;
  */
 public class JobManager {
   private static final Logger logger = LoggerFactory.getLogger(JobManager.class);
+
+  public void start() {
+
+  }
 }
