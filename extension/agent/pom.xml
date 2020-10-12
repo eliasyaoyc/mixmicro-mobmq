@@ -12,6 +12,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mixmicro-neptune-extension-agent</artifactId>
-    <name>Mixmicro Neptune Extension Agent</name>
+    <name>Neptune Extension Agent</name>
 
 </project>

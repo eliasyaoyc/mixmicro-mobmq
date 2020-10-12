@@ -18,7 +18,7 @@
         <!-- Core Dependencies -->
         <dependency>
             <groupId>xyz.vopen.framework</groupId>
-            <artifactId>mixmicro-neptune-common</artifactId>
+            <artifactId>mixmicro-neptune-rpc</artifactId>
         </dependency>
 
         <dependency>

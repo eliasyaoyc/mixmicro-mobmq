@@ -1,7 +1,7 @@
 package xyz.vopen.framework.neptune.core.exceptions;
 
 import xyz.vopen.framework.neptune.common.exceptions.NeptuneRuntimeException;
-import xyz.vopen.framework.neptune.core.configuration.Configuration;
+import xyz.vopen.framework.neptune.common.configuration.Configuration;
 
 import javax.validation.constraints.NotNull;
 

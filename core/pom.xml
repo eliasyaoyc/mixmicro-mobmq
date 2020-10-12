@@ -14,9 +14,10 @@
     <name>Neptune Core Module</name>
 
     <dependencies>
+
         <dependency>
             <groupId>xyz.vopen.framework</groupId>
-            <artifactId>mixmicro-neptune-common</artifactId>
+            <artifactId>mixmicro-neptune-rpc</artifactId>
         </dependency>
 
         <dependency>
@@ -42,20 +43,6 @@
                     <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <!-- akka remote -->
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-remote_2.13</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-serialization-jackson_2.13</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-slf4j_2.13</artifactId>
         </dependency>
     </dependencies>
 </project>
