@@ -56,7 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
  * @version ${project.version} - 2020/9/29
  */
-public class RpcEndpoint implements RpcGateway, AutoCloseableAsync {
+public abstract class RpcEndpoint implements RpcGateway, AutoCloseableAsync {
   protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   /** RPC service to be used to start the RPC server and to obtain tpc gateway. */

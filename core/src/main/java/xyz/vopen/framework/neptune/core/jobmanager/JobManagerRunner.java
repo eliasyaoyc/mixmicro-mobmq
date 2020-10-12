@@ -3,6 +3,7 @@ package xyz.vopen.framework.neptune.core.jobmanager;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xyz.vopen.framework.neptune.common.enums.ApplicationStatus;
 import xyz.vopen.framework.neptune.common.time.Time;
 import xyz.vopen.framework.neptune.common.utils.AutoCloseableAsync;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
@@ -10,6 +11,7 @@ import xyz.vopen.framework.neptune.common.utils.ExecutorThreadFactory;
 import xyz.vopen.framework.neptune.common.utils.ShutdownHookUtil;
 import xyz.vopen.framework.neptune.core.configuration.Configuration;
 import xyz.vopen.framework.neptune.core.configuration.JobManagerOptions;
+import xyz.vopen.framework.neptune.core.dispatcher.*;
 import xyz.vopen.framework.neptune.core.exceptions.JobManagerInitializeException;
 import xyz.vopen.framework.neptune.core.rpc.FatalErrorHandler;
 import xyz.vopen.framework.neptune.core.rpc.RpcService;
@@ -38,10 +40,13 @@ public class JobManagerRunner implements FatalErrorHandler, AutoCloseableAsync {
   @GuardedBy("lock")
   private final RpcService rpcService;
 
+  @GuardedBy("lock")
+  private DispatcherComponent component;
+
   private final JobManager jobManager;
   private final Time timeout;
   /** Executor used to run future callbacks. */
-  private final ExecutorService executor;
+  private final ExecutorService ioExecutor;
 
   private final CompletableFuture<Void> terminationFuture;
   private final AtomicBoolean isShutDown = new AtomicBoolean(false);
@@ -54,7 +59,7 @@ public class JobManagerRunner implements FatalErrorHandler, AutoCloseableAsync {
 
     this.timeout = AkkaUtils.getTimeoutAsTime(configuration);
     this.rpcService = createRpcService(configuration);
-    this.executor =
+    this.ioExecutor =
         Executors.newScheduledThreadPool(
             Runtime.getRuntime().availableProcessors(),
             new ExecutorThreadFactory("jobmanager-future"));
@@ -102,7 +107,10 @@ public class JobManagerRunner implements FatalErrorHandler, AutoCloseableAsync {
           ExceptionUtil.stripException(e, UndeclaredThrowableException.class);
 
       try {
-        shutdownAsync(ExceptionUtil.stringifyException(strippedThrowable), false)
+        shutdownAsync(
+                ApplicationStatus.FAILED,
+                ExceptionUtil.stringifyException(strippedThrowable),
+                false)
             .get(INITIALIZATION_SHUTDOWN_TIMEOUT.toMilliseconds(), TimeUnit.MILLISECONDS);
       } catch (InterruptedException | ExecutionException | TimeoutException t) {
         strippedThrowable.addSuppressed(t);
@@ -113,7 +121,42 @@ public class JobManagerRunner implements FatalErrorHandler, AutoCloseableAsync {
     }
   }
 
-  public void runJobManager(Configuration configuration) {}
+  @GuardedBy("lock")
+  private void runJobManager(Configuration configuration) throws Exception {
+
+    // write host information into configuration.
+    configuration.setString(JobManagerOptions.ADDRESS, rpcService.getAddress());
+    configuration.setInteger(JobManagerOptions.PORT, rpcService.getPort());
+
+    // create DispatcherComponentFactory.
+    final DispatcherComponentFactory dispatcherComponentFactory =
+        createDispatcherComponentFactory(configuration);
+
+    // create DispatcherComponent via DispatcherComponentFactory and start.
+    component = dispatcherComponentFactory.create(configuration, ioExecutor, rpcService, this);
+
+    component
+        .getShutDownFuture()
+        .whenComplete(
+            (applicationStatus, throwable) -> {
+              if (throwable != null) {
+                shutdownAsync(
+                    ApplicationStatus.UNKNOWN, ExceptionUtil.stringifyException(throwable), false);
+              } else {
+                // This is the general shutdown path. If a separate more specific shutdown was
+                // already triggered,this will do nothing.
+                shutdownAsync(applicationStatus, null, true);
+              }
+            });
+  }
+
+  private DispatcherComponentFactory createDispatcherComponentFactory(
+      final Configuration configuration) {
+    return new DefaultDispatcherComponentFactory(
+        new DefaultDispatcherRunnerFactory(
+            DefaultDispatcherLeaderProcessFactoryFactory.create(
+                configuration, SessionDispatcherFactory.INSTANCE)));
+  }
 
   /**
    * Returns the port range for the common {@link RpcService}.
@@ -140,12 +183,13 @@ public class JobManagerRunner implements FatalErrorHandler, AutoCloseableAsync {
 
   @Override
   public CompletableFuture<Void> closeAsync() {
-    return shutdownAsync("JobManager entrypoint has been closed externally", true)
+    return shutdownAsync(
+            ApplicationStatus.UNKNOWN, "JobManager entrypoint has been closed externally", true)
         .thenAccept(ignored -> {});
   }
 
   private CompletableFuture<Void> shutdownAsync(
-      @Nullable String diagnostics, boolean cleanupHaData) {
+      ApplicationStatus applicationStatus, @Nullable String diagnostics, boolean cleanupHaData) {
     return null;
   }
 

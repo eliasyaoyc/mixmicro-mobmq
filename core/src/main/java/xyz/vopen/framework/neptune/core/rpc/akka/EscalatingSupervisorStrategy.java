@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.core.akka;
+package xyz.vopen.framework.neptune.core.rpc.akka;
 
 import akka.actor.OneForOneStrategy;
 import akka.actor.SupervisorStrategy;
@@ -18,7 +18,7 @@ public class EscalatingSupervisorStrategy implements SupervisorStrategyConfigura
     return new OneForOneStrategy(
         false,
         new PFBuilder<Throwable, SupervisorStrategy.Directive>()
-            .matchAny((ignored) -> SupervisorStrategy.escalate())
+            .matchAny((ignored) -> (SupervisorStrategy.Directive) SupervisorStrategy.escalate())
             .build());
   }
 }

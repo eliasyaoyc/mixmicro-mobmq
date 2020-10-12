@@ -10,8 +10,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
- * {@link ScheduledFutureAdapter}
+ * {@link ScheduledFutureAdapter} Adapter from {@link Future} to {@link ScheduledFuture}. This
+ * enriches the basic future with scheduling information.
  *
+ * @param <V> value type of the future.
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
  * @version ${project.version} - 2020/10/7
  */
@@ -20,7 +22,7 @@ public class ScheduledFutureAdapter<V> implements ScheduledFuture<V> {
   private static final AtomicLong SEQUENCE_GEN = new AtomicLong();
 
   /** The encapsulated basic future to which execution is delegated. */
-  @Nonnull private final Future<V> delegate;
+  private final @Nonnull Future<V> delegate;
 
   /** Tie-breaker for {@link #compareTo(Delayed)}. */
   private final long tieBreakerUid;
