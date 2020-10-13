@@ -86,7 +86,7 @@ public class AkkaInvocationHandler implements InvocationHandler, AkkaBasedEndpoi
     if (declaringClass.equals(AkkaBasedEndpoint.class)
         || declaringClass.equals(Object.class)
         || declaringClass.equals(RpcGateway.class)
-        || declaringClass.equals(StartStoppable.class)
+        || declaringClass.equals(RpcStartStoppable.class)
         || declaringClass.equals(MainThreadExecutable.class)
         || declaringClass.equals(RpcServer.class)) {
       result = method.invoke(this, args);

@@ -5,26 +5,18 @@ import xyz.vopen.framework.neptune.rpc.FatalErrorHandler;
 import xyz.vopen.framework.neptune.rpc.RpcService;
 
 /**
- * {@link DispatcherFactory} Dispatcher factory interface.
+ * {@link StandaloneDispatcher}
  *
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
- * @version ${project.version} - 2020/10/12
+ * @version ${project.version} - 2020/10/13
  */
-public interface DispatcherFactory {
+public class StandaloneDispatcher extends Dispatcher {
 
-  /**
-   * Create a {@link Dispatcher}.
-   *
-   * @param configuration
-   * @param rpcService
-   * @param dispatcherId
-   * @return
-   * @throws Exception
-   */
-  Dispatcher create(
+  public StandaloneDispatcher(
       Configuration configuration,
       FatalErrorHandler fatalErrorHandler,
       RpcService rpcService,
-      String dispatcherId)
-      throws Exception;
+      String dispatcherId) {
+    super(configuration, fatalErrorHandler, rpcService, dispatcherId);
+  }
 }

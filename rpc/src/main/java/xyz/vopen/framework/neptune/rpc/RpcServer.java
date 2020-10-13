@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
  * @version ${project.version} - 2020/9/29
  */
-public interface RpcServer extends StartStoppable, MainThreadExecutable, RpcGateway {
+public interface RpcServer extends RpcStartStoppable, MainThreadExecutable, RpcGateway {
 
   /**
    * Returns a future which is completed when the rpc endpoint has been terminated.

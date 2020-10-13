@@ -120,6 +120,13 @@
 
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-neptune-repository-mongo</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
                 <artifactId>mixmicro-neptune-rpc</artifactId>
                 <version>${revision}</version>
             </dependency>

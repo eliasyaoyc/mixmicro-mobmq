@@ -11,7 +11,7 @@ import scala.Tuple2;
 import scala.concurrent.Future;
 import scala.reflect.ClassTag$;
 import xyz.vopen.framework.neptune.common.annoations.VisibleForTesting;
-import xyz.vopen.framework.neptune.common.utils.AutoCloseableAsync;
+import xyz.vopen.framework.neptune.common.AutoCloseableAsync;
 import xyz.vopen.framework.neptune.common.utils.ExecutorThreadFactory;
 import xyz.vopen.framework.neptune.common.utils.ExecutorStUtil;
 import xyz.vopen.framework.neptune.common.utils.TimeUtil;

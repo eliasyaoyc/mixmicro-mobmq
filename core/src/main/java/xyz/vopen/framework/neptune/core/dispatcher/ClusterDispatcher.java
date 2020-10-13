@@ -1,30 +1,25 @@
 package xyz.vopen.framework.neptune.core.dispatcher;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
 import xyz.vopen.framework.neptune.rpc.FatalErrorHandler;
 import xyz.vopen.framework.neptune.rpc.RpcService;
 
 /**
- * {@link DispatcherFactory} Dispatcher factory interface.
+ * {@link ClusterDispatcher}
  *
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
- * @version ${project.version} - 2020/10/12
+ * @version ${project.version} - 2020/10/13
  */
-public interface DispatcherFactory {
+public class ClusterDispatcher extends Dispatcher {
+  private static final Logger logger = LoggerFactory.getLogger(ClusterDispatcher.class);
 
-  /**
-   * Create a {@link Dispatcher}.
-   *
-   * @param configuration
-   * @param rpcService
-   * @param dispatcherId
-   * @return
-   * @throws Exception
-   */
-  Dispatcher create(
+  public ClusterDispatcher(
       Configuration configuration,
       FatalErrorHandler fatalErrorHandler,
       RpcService rpcService,
-      String dispatcherId)
-      throws Exception;
+      String dispatcherId) {
+    super(configuration, fatalErrorHandler, rpcService, dispatcherId);
+  }
 }

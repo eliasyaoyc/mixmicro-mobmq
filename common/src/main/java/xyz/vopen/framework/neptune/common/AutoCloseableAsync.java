@@ -1,6 +1,7 @@
-package xyz.vopen.framework.neptune.common.utils;
+package xyz.vopen.framework.neptune.common;
 
 import xyz.vopen.framework.neptune.common.exceptions.NeptuneException;
+import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 
 import java.util.concurrent.CompletableFuture;
 

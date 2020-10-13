@@ -1,7 +1,7 @@
 package xyz.vopen.framework.neptune.rpc;
 
 import xyz.vopen.framework.neptune.common.time.Time;
-import xyz.vopen.framework.neptune.common.utils.AutoCloseableAsync;
+import xyz.vopen.framework.neptune.common.AutoCloseableAsync;
 import xyz.vopen.framework.neptune.common.concurrent.FutureUtil;
 
 import java.time.Duration;
