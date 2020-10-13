@@ -277,6 +277,11 @@
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>xyz.vopen.framework</groupId>
+            <artifactId>mixmicro-neptune-common</artifactId>
+        </dependency>
     </dependencies>
 
 

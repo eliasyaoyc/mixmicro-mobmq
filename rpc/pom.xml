@@ -14,9 +14,5 @@
     <name>Neptune RPC Module</name>
 
     <dependencies>
-        <dependency>
-            <groupId>xyz.vopen.framework</groupId>
-            <artifactId>mixmicro-neptune-common</artifactId>
-        </dependency>
     </dependencies>
 </project>
