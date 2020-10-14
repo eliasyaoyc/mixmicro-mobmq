@@ -1,5 +1,7 @@
 package xyz.vopen.framework.neptune.core.alarm;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * {@link Alarm}
  *
@@ -8,4 +10,10 @@ package xyz.vopen.framework.neptune.core.alarm;
  */
 public interface Alarm {
 
+  CompletableFuture<Void> sendAlarm();
+
+  enum AlarmEnum {
+    EMAIL,
+    MESSAGE;
+  }
 }

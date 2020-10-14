@@ -15,8 +15,7 @@ public class StandaloneDispatcher extends Dispatcher {
   StandaloneDispatcher(
       Configuration configuration,
       FatalErrorHandler fatalErrorHandler,
-      RpcService rpcService,
-      String dispatcherId) {
-    super(configuration, fatalErrorHandler, rpcService, dispatcherId);
+      RpcService rpcService) {
+    super(configuration, fatalErrorHandler, rpcService);
   }
 }

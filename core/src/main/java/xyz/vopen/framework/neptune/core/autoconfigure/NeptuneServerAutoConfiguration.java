@@ -1,6 +1,5 @@
 package xyz.vopen.framework.neptune.core.autoconfigure;
 
-import akka.actor.ActorSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -10,16 +9,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
-import xyz.vopen.framework.neptune.core.dispatcher.DefaultDispatcherFactory;
-import xyz.vopen.framework.neptune.core.dispatcher.Dispatcher;
-import xyz.vopen.framework.neptune.rpc.FatalErrorHandler;
-import xyz.vopen.framework.neptune.rpc.RpcEndpoint;
-import xyz.vopen.framework.neptune.rpc.RpcGateway;
-import xyz.vopen.framework.neptune.rpc.RpcService;
-import xyz.vopen.framework.neptune.rpc.akka.AkkaRpcService;
-import xyz.vopen.framework.neptune.rpc.akka.AkkaRpcServiceConfiguration;
-import xyz.vopen.framework.neptune.rpc.akka.AkkaUtils;
+import xyz.vopen.framework.neptune.common.annoations.VisibleForTesting;
+import xyz.vopen.framework.neptune.common.configuration.command.CommandLineParser;
+import xyz.vopen.framework.neptune.common.configuration.command.NeptuneConfiguration;
+import xyz.vopen.framework.neptune.common.configuration.command.NeptuneConfigurationParserFactory;
+import xyz.vopen.framework.neptune.common.exceptions.NeptuneParseException;
+import xyz.vopen.framework.neptune.core.entrypoint.DefaultNeptuneEntrypoint;
+import xyz.vopen.framework.neptune.core.entrypoint.NeptuneEntrypoint;
 
 import javax.annotation.Nonnull;
 
@@ -63,45 +59,45 @@ public class NeptuneServerAutoConfiguration {
     @Override
     public void onApplicationEvent(@Nonnull SpringApplicationEvent springApplicationEvent) {
       if (springApplicationEvent instanceof ApplicationReadyEvent) {
-        AkkaRpcServiceConfiguration configuration =
-            AkkaRpcServiceConfiguration.defaultConfiguration();
-        ActorSystem actorSystem = AkkaUtils.createDefaultActorSystem();
-        RpcService rpcService = new AkkaRpcService(actorSystem, configuration);
 
-        Dispatcher dispatcher =
-            DefaultDispatcherFactory.INSTANCE.create(
-                new xyz.vopen.framework.neptune.common.configuration.Configuration(),
-                new FatalErrorHandler() {
-                  @Override
-                  public void onFatalError(Throwable exception) {
-                    System.out.println(ExceptionUtil.stringifyException(exception));
-                  }
-                },
-                rpcService,
-                "test");
+        Runtime.getRuntime()
+            .addShutdownHook(
+                new Thread(
+                    () -> {
+                      try {
+                        Thread.sleep(5000L);
+                      } catch (Throwable e) {
 
-        HelloEndpoint helloEndpoint = new HelloEndpoint(rpcService);
-        helloEndpoint.start();
-        HelloGateway selfGateway = helloEndpoint.getSelfGateway(HelloGateway.class);
-        String hello = selfGateway.hello();
-        System.out.println(hello);
+                      }
+                      Runtime.getRuntime().halt(-17);
+                    }));
+
+        CommandLineParser<NeptuneConfiguration> parser =
+            new CommandLineParser<>(new NeptuneConfigurationParserFactory());
+        NeptuneConfiguration neptuneConfiguration = null;
+
+        try {
+          neptuneConfiguration = parser.parse(null);
+        } catch (NeptuneParseException e) {
+          logger.error("Could not parse command line arguments {}.", null, e);
+          parser.printHelp(NeptuneConfiguration.class.getSimpleName());
+          System.exit(1);
+        }
+
+        DefaultNeptuneEntrypoint entrypoint =
+            new DefaultNeptuneEntrypoint(loadConfigurationFromNeptuneConfig(neptuneConfiguration));
+
+        NeptuneEntrypoint.runApplicationEntrypoint(entrypoint);
       }
     }
   }
 
-  public static class HelloEndpoint extends RpcEndpoint implements HelloGateway {
+  @VisibleForTesting
+  static xyz.vopen.framework.neptune.common.configuration.Configuration
+      loadConfigurationFromNeptuneConfig(final NeptuneConfiguration neptuneConfiguration) {
+    final xyz.vopen.framework.neptune.common.configuration.Configuration configuration =
+        new xyz.vopen.framework.neptune.common.configuration.Configuration();
 
-    protected HelloEndpoint(RpcService rpcService) {
-      super(rpcService);
-    }
-
-    @Override
-    public String hello() {
-      return "hello";
-    }
-  }
-
-  public interface HelloGateway extends RpcGateway {
-    String hello();
+    return configuration;
   }
 }

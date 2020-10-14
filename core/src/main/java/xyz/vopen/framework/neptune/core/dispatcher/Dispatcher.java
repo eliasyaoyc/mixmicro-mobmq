@@ -34,7 +34,6 @@ public abstract class Dispatcher extends RpcEndpoint implements DispatcherGatewa
 
   private final Configuration configuration;
   private final RpcService rpcService;
-  private final String dispatcherId;
   private final @Nonnull Persistence persistence;
   private final FatalErrorHandler fatalErrorHandler;
   protected final CompletableFuture<ApplicationStatus> shutDownFuture;
@@ -42,15 +41,13 @@ public abstract class Dispatcher extends RpcEndpoint implements DispatcherGatewa
   public Dispatcher(
       final Configuration configuration,
       final FatalErrorHandler fatalErrorHandler,
-      final RpcService rpcService,
-      final String dispatcherId) {
-    super(rpcService, dispatcherId);
+      final RpcService rpcService) {
+    super(rpcService);
     Preconditions.checkNotNull(configuration, "Configuration is null");
 
     this.configuration = configuration;
     this.rpcService = rpcService;
     this.fatalErrorHandler = fatalErrorHandler;
-    this.dispatcherId = dispatcherId;
     // TODO: Persistence.PersistenceEnum.MONGO will changed that obtain from Configuration.
     this.persistence =
         PersistenceFactory.INSTANCE.create(configuration, Persistence.PersistenceEnum.MONGO);

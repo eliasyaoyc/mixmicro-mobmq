@@ -17,14 +17,12 @@ public interface DispatcherFactory {
    *
    * @param configuration
    * @param rpcService
-   * @param dispatcherId
    * @return
    * @throws Exception
    */
   Dispatcher create(
       Configuration configuration,
       FatalErrorHandler fatalErrorHandler,
-      RpcService rpcService,
-      String dispatcherId)
+      RpcService rpcService)
       throws Exception;
 }

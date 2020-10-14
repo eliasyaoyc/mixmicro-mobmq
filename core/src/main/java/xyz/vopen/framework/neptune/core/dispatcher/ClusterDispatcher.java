@@ -18,8 +18,7 @@ public class ClusterDispatcher extends Dispatcher {
   ClusterDispatcher(
       Configuration configuration,
       FatalErrorHandler fatalErrorHandler,
-      RpcService rpcService,
-      String dispatcherId) {
-    super(configuration, fatalErrorHandler, rpcService, dispatcherId);
+      RpcService rpcService) {
+    super(configuration, fatalErrorHandler, rpcService);
   }
 }

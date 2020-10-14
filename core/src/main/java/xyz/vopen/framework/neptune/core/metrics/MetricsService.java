@@ -1,0 +1,10 @@
+package xyz.vopen.framework.neptune.core.metrics;
+
+/**
+ * {@link MetricsService}
+ *
+ * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
+ * @version ${project.version} - 2020/10/14
+ */
+public abstract class MetricsService implements Metrics{
+}
