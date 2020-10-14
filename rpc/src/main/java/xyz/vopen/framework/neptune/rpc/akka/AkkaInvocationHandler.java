@@ -5,6 +5,7 @@ import akka.pattern.Patterns;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xyz.vopen.framework.neptune.common.NeptuneStartStoppable;
 import xyz.vopen.framework.neptune.common.exceptions.NeptuneRuntimeException;
 import xyz.vopen.framework.neptune.common.time.Time;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
@@ -87,6 +88,7 @@ public class AkkaInvocationHandler implements InvocationHandler, AkkaBasedEndpoi
         || declaringClass.equals(Object.class)
         || declaringClass.equals(RpcGateway.class)
         || declaringClass.equals(RpcStartStoppable.class)
+        || declaringClass.equals(NeptuneStartStoppable.class)
         || declaringClass.equals(MainThreadExecutable.class)
         || declaringClass.equals(RpcServer.class)) {
       result = method.invoke(this, args);

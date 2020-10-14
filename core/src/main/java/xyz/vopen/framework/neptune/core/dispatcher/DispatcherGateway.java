@@ -33,6 +33,14 @@ public interface DispatcherGateway extends RpcGateway {
   CompletableFuture<List<String>> listJobs(@RpcTimeout Time timeout);
 
   /**
+   * @param jobId unique identity of job.
+   * @param timout RPC timeout.
+   * @param removed Physical deleted the job if it is true.
+   * @return A future acknowledge if the submission succeeded.
+   */
+  CompletableFuture<Acknowledge> stopJob(String jobId, @RpcTimeout Time timout, boolean removed);
+
+  /**
    * Shut down the {@link xyz.vopen.framework.neptune.core.jobmanager.JobManager}.
    *
    * @return A future acknowledge.

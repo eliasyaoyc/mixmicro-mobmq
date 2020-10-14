@@ -352,7 +352,7 @@ public class AkkaRpcService implements RpcService {
   @Override
   public <T> CompletableFuture<T> execute(Callable<T> callable) {
     Future<T> scalaFuture = Futures.<T>future(callable, actorSystem.dispatcher());
-    return FutureUtil.toJava(scalaFuture);
+    return (CompletableFuture<T>) FutureUtil.toJava(scalaFuture);
   }
 
   private Tuple2<String, String> extractAddressHostname(ActorRef actorRef) {
@@ -384,16 +384,16 @@ public class AkkaRpcService implements RpcService {
 
     // 发送握手消息
     final CompletableFuture<HandshakeSuccessMessage> handshakeFuture =
-        actorRefFuture.thenCompose(
-            (ActorRef actorRef) ->
-                FutureUtil.toJava(
-                    Patterns.ask(
-                            actorRef,
-                            new RemoteHandshakeMessage(clazz, getVersion()),
-                            configuration.getTimeout().toMilliseconds())
-                        .<HandshakeSuccessMessage>mapTo(
-                            ClassTag$.MODULE$.<HandshakeSuccessMessage>apply(
-                                HandshakeSuccessMessage.class))));
+            (CompletableFuture<HandshakeSuccessMessage>) actorRefFuture.thenCompose(
+                (ActorRef actorRef) ->
+                    FutureUtil.toJava(
+                        Patterns.ask(
+                                actorRef,
+                                new RemoteHandshakeMessage(clazz, getVersion()),
+                                configuration.getTimeout().toMilliseconds())
+                            .<HandshakeSuccessMessage>mapTo(
+                                ClassTag$.MODULE$.<HandshakeSuccessMessage>apply(
+                                    HandshakeSuccessMessage.class))));
 
     // create InvocationHandler and generate proxy object through dynamic proxy.
     return actorRefFuture.thenCombineAsync(

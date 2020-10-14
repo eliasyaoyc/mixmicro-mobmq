@@ -73,7 +73,7 @@ public abstract class Dispatcher extends RpcEndpoint implements DispatcherGatewa
 
   private void startDispatcherServices() throws Exception {
     try {
-
+      start();
     } catch (Exception e) {
       handleStartDispatcherServicesException(e);
     }
@@ -121,6 +121,11 @@ public abstract class Dispatcher extends RpcEndpoint implements DispatcherGatewa
 
   @Override
   public CompletableFuture<Acknowledge> shutdownJobManager() {
+    return null;
+  }
+
+  @Override
+  public CompletableFuture<Acknowledge> stopJob(String jobId, Time timout, boolean removed) {
     return null;
   }
 
