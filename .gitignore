@@ -3,6 +3,10 @@
 # Compiled class file
 *.class
 
+*/target
+
+*/targer/**
+
 .idea
 # Log file
 *.log
@@ -12,8 +16,6 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
-*/target
 
 *.iml
 # Package Files #
