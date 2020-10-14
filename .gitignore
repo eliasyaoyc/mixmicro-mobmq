@@ -3,9 +3,7 @@
 # Compiled class file
 *.class
 
-*/target
-
-*/targer/**
+target
 
 .idea
 # Log file
