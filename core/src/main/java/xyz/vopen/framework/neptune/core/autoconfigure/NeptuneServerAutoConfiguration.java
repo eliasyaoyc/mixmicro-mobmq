@@ -4,6 +4,7 @@ import akka.actor.ActorSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.SpringApplicationEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationListener;
@@ -61,28 +62,30 @@ public class NeptuneServerAutoConfiguration {
      */
     @Override
     public void onApplicationEvent(@Nonnull SpringApplicationEvent springApplicationEvent) {
-      AkkaRpcServiceConfiguration configuration =
-          AkkaRpcServiceConfiguration.defaultConfiguration();
-      ActorSystem actorSystem = AkkaUtils.createDefaultActorSystem();
-      RpcService rpcService = new AkkaRpcService(actorSystem, configuration);
+      if (springApplicationEvent instanceof ApplicationReadyEvent) {
+        AkkaRpcServiceConfiguration configuration =
+            AkkaRpcServiceConfiguration.defaultConfiguration();
+        ActorSystem actorSystem = AkkaUtils.createDefaultActorSystem();
+        RpcService rpcService = new AkkaRpcService(actorSystem, configuration);
 
-      Dispatcher dispatcher = DefaultDispatcherFactory.INSTANCE.create(
-              new xyz.vopen.framework.neptune.common.configuration.Configuration(),
-              new FatalErrorHandler() {
-                @Override
-                public void onFatalError(Throwable exception) {
-                  System.out.println(ExceptionUtil.stringifyException(exception));
-                }
-              },
-              rpcService,
-              "test");
+        Dispatcher dispatcher =
+            DefaultDispatcherFactory.INSTANCE.create(
+                new xyz.vopen.framework.neptune.common.configuration.Configuration(),
+                new FatalErrorHandler() {
+                  @Override
+                  public void onFatalError(Throwable exception) {
+                    System.out.println(ExceptionUtil.stringifyException(exception));
+                  }
+                },
+                rpcService,
+                "test");
 
-      dispatcher.start();
-      HelloEndpoint helloEndpoint = new HelloEndpoint(rpcService);
-      helloEndpoint.start();
-      HelloGateway selfGateway = helloEndpoint.getSelfGateway(HelloGateway.class);
-      String hello = selfGateway.hello();
-      System.out.println(hello);
+        HelloEndpoint helloEndpoint = new HelloEndpoint(rpcService);
+        helloEndpoint.start();
+        HelloGateway selfGateway = helloEndpoint.getSelfGateway(HelloGateway.class);
+        String hello = selfGateway.hello();
+        System.out.println(hello);
+      }
     }
   }
 

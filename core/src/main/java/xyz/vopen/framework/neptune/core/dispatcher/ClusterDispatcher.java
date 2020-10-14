@@ -15,7 +15,7 @@ import xyz.vopen.framework.neptune.rpc.RpcService;
 public class ClusterDispatcher extends Dispatcher {
   private static final Logger logger = LoggerFactory.getLogger(ClusterDispatcher.class);
 
-  public ClusterDispatcher(
+  ClusterDispatcher(
       Configuration configuration,
       FatalErrorHandler fatalErrorHandler,
       RpcService rpcService,

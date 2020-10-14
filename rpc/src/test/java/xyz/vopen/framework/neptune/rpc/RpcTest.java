@@ -59,10 +59,10 @@ public class RpcTest {
     String hello = selfGateway.hello();
     System.out.println(hello);
 
-//    HiRpcEndpoint hiRpcEndpoint = new HiRpcEndpoint(rpcService);
-//    hiRpcEndpoint.start();
-//    HiGateway hiGateway = rpcService.connect(hiRpcEndpoint.getAddress(), HiGateway.class).get();
-//    String hi = hiGateway.hi();
-//    System.out.println(hi);
+    HiRpcEndpoint hiRpcEndpoint = new HiRpcEndpoint(rpcService);
+    hiRpcEndpoint.start();
+    HiGateway hiGateway = rpcService.connect(hiRpcEndpoint.getAddress(), HiGateway.class).get();
+    String hi = hiGateway.hi();
+    System.out.println(hi);
   }
 }

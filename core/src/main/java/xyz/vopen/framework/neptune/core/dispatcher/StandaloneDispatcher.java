@@ -12,7 +12,7 @@ import xyz.vopen.framework.neptune.rpc.RpcService;
  */
 public class StandaloneDispatcher extends Dispatcher {
 
-  public StandaloneDispatcher(
+  StandaloneDispatcher(
       Configuration configuration,
       FatalErrorHandler fatalErrorHandler,
       RpcService rpcService,
