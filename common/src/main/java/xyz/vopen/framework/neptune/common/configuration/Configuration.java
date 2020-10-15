@@ -714,8 +714,6 @@ public class Configuration<T> implements ReadableConfig {
       return (T) convertToEnum(rawValue, (Class<? extends Enum<?>>) clazz);
     } else if (clazz == Duration.class) {
       return (T) convertToDuration(rawValue);
-    } else if (clazz == MemorySize.class) {
-      return (T) convertToMemorySize(rawValue);
     } else if (clazz == Map.class) {
       return (T) convertToProperties(rawValue);
     }
@@ -780,14 +778,6 @@ public class Configuration<T> implements ReadableConfig {
     return TimeUtil.parseDuration(o.toString());
   }
 
-  private MemorySize convertToMemorySize(Object o) {
-    if (o.getClass() == MemorySize.class) {
-      return (MemorySize) o;
-    }
-
-    return MemorySize.parse(o.toString());
-  }
-
   private String convertToString(Object o) {
     if (o.getClass() == String.class) {
       return (String) o;
@@ -804,10 +794,14 @@ public class Configuration<T> implements ReadableConfig {
           .entrySet().stream()
               .map(
                   e -> {
-                    String escapedKey = StructuredOptionsSplitter.escapeWithSingleQuote(e.getKey().toString(), ":");
-                    String escapedValue = StructuredOptionsSplitter.escapeWithSingleQuote(e.getValue().toString(), ":");
+                    String escapedKey =
+                        StructuredOptionsSplitter.escapeWithSingleQuote(e.getKey().toString(), ":");
+                    String escapedValue =
+                        StructuredOptionsSplitter.escapeWithSingleQuote(
+                            e.getValue().toString(), ":");
 
-                    return StructuredOptionsSplitter.escapeWithSingleQuote(escapedKey + ":" + escapedValue, ",");
+                    return StructuredOptionsSplitter.escapeWithSingleQuote(
+                        escapedKey + ":" + escapedValue, ",");
                   })
               .collect(Collectors.joining(","));
     }

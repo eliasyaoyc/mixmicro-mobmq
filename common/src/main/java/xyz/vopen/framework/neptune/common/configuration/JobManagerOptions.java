@@ -5,7 +5,9 @@ import static xyz.vopen.framework.neptune.common.configuration.ConfigOptions.key
 /** Configuration options for the JobManager. */
 public class JobManagerOptions {
 
-  public static final MemorySize MIN_JVM_HEAP_SIZE = MemorySize.ofMebiBytes(128);
+  private JobManagerOptions() {
+    throw new IllegalAccessError();
+  }
 
   /**
    * The config parameter defining the network address to connect to for communication with the job
@@ -74,96 +76,6 @@ public class JobManagerOptions {
                   + PORT.key()
                   + "') will be used.");
 
-  /**
-   * JVM heap size for the JobManager with memory size.
-   *
-   * @deprecated use {@link #TOTAL_FLINK_MEMORY} for standalone setups and {@link
-   *     #TOTAL_PROCESS_MEMORY} for containerized setups.
-   */
-  public static final ConfigOption<MemorySize> JOB_MANAGER_HEAP_MEMORY =
-      key("jobmanager.heap.size")
-          .memoryType()
-          .noDefaultValue()
-          .withDescription("JVM heap size for the JobManager.");
-
-  /**
-   * JVM heap size (in megabytes) for the JobManager.
-   *
-   * @deprecated use {@link #TOTAL_FLINK_MEMORY} for standalone setups and {@link
-   *     #TOTAL_PROCESS_MEMORY} for containerized setups.
-   */
-  public static final ConfigOption<Integer> JOB_MANAGER_HEAP_MEMORY_MB =
-      key("jobmanager.heap.mb")
-          .intType()
-          .noDefaultValue()
-          .withDescription("JVM heap size (in megabytes) for the JobManager.");
-
-  /** Total Process Memory size for the JobManager. */
-  public static final ConfigOption<MemorySize> TOTAL_PROCESS_MEMORY =
-      key("jobmanager.memory.process.size")
-          .memoryType()
-          .noDefaultValue()
-          .withDescription(
-              "Total Process Memory size for the JobManager. This includes all the memory that a "
-                  + "JobManager JVM process consumes, consisting of Total Flink Memory, JVM Metaspace, and JVM Overhead. "
-                  + "In containerized setups, this should be set to the container memory. See also "
-                  + "'jobmanager.memory.flink.size' for Total Flink Memory size configuration.");
-
-  /** Total Flink Memory size for the JobManager. */
-  public static final ConfigOption<MemorySize> TOTAL_FLINK_MEMORY =
-      key("jobmanager.memory.flink.size")
-          .memoryType()
-          .noDefaultValue()
-          .withDescription(
-              String.format(
-                  "Total Flink Memory size for the JobManager. This includes all the "
-                      + "memory that a JobManager consumes, except for JVM Metaspace and JVM Overhead. It consists of "
-                      + "JVM Heap Memory and Off-heap Memory. See also '%s' for total process memory size configuration.",
-                  TOTAL_PROCESS_MEMORY.key()));
-
-  /** JVM Heap Memory size for the JobManager. */
-  public static final ConfigOption<MemorySize> JVM_HEAP_MEMORY =
-      key("jobmanager.memory.heap.size")
-          .memoryType()
-          .noDefaultValue()
-          .withDescription(
-              "JVM Heap Memory size for JobManager. The minimum recommended JVM Heap size is "
-                  + MIN_JVM_HEAP_SIZE
-                  + '.');
-
-  /** Off-heap Memory size for the JobManager. */
-  public static final ConfigOption<MemorySize> OFF_HEAP_MEMORY =
-      key("jobmanager.memory.off-heap.size")
-          .memoryType()
-          .defaultValue(MemorySize.ofMebiBytes(128))
-          .withDescription(
-              Description.builder()
-                  .text(
-                      "Off-heap Memory size for JobManager. This option covers all off-heap memory usage including "
-                          + "direct and native memory allocation. The JVM direct memory limit of the JobManager process "
-                          + "(-XX:MaxDirectMemorySize) will be set to this value if the limit is enabled by "
-                          + "'jobmanager.memory.enable-jvm-direct-memory-limit'. ")
-                  .build());
-
-  /** Off-heap Memory size for the JobManager. */
-  public static final ConfigOption<Boolean> JVM_DIRECT_MEMORY_LIMIT_ENABLED =
-      key("jobmanager.memory.enable-jvm-direct-memory-limit")
-          .booleanType()
-          .defaultValue(false)
-          .withDescription(
-              Description.builder()
-                  .text(
-                      "Whether to enable the JVM direct memory limit of the JobManager process "
-                          + "(-XX:MaxDirectMemorySize). The limit will be set to the value of '%s' option. ")
-                  .build());
-
-  /** JVM Metaspace Size for the JobManager. */
-  public static final ConfigOption<MemorySize> JVM_METASPACE =
-      key("jobmanager.memory.jvm-metaspace.size")
-          .memoryType()
-          .defaultValue(MemorySize.ofMebiBytes(256))
-          .withDescription("JVM Metaspace Size for the JobManager.");
-
   private static final String JVM_OVERHEAD_DESCRIPTION =
       "This is off-heap memory reserved for JVM "
           + "overhead, such as thread stack space, compile cache, etc. This includes native memory but not direct "
@@ -171,29 +83,6 @@ public class JobManagerOptions {
           + "of JVM Overhead is derived to make up the configured fraction of the Total Process Memory. If the "
           + "derived size is less or greater than the configured min or max size, the min or max size will be used. The "
           + "exact size of JVM Overhead can be explicitly specified by setting the min and max size to the same value.";
-
-  /** Min JVM Overhead size for the JobManager. */
-  public static final ConfigOption<MemorySize> JVM_OVERHEAD_MIN =
-      key("jobmanager.memory.jvm-overhead.min")
-          .memoryType()
-          .defaultValue(MemorySize.ofMebiBytes(192))
-          .withDescription("Min JVM Overhead size for the JobManager. " + JVM_OVERHEAD_DESCRIPTION);
-
-  /** Max JVM Overhead size for the TaskExecutors. */
-  public static final ConfigOption<MemorySize> JVM_OVERHEAD_MAX =
-      key("jobmanager.memory.jvm-overhead.max")
-          .memoryType()
-          .defaultValue(MemorySize.parse("1g"))
-          .withDescription("Max JVM Overhead size for the JobManager. " + JVM_OVERHEAD_DESCRIPTION);
-
-  /** Fraction of Total Process Memory to be reserved for JVM Overhead. */
-  public static final ConfigOption<Float> JVM_OVERHEAD_FRACTION =
-      key("jobmanager.memory.jvm-overhead.fraction")
-          .floatType()
-          .defaultValue(0.1f)
-          .withDescription(
-              "Fraction of Total Process Memory to be reserved for JVM Overhead. "
-                  + JVM_OVERHEAD_DESCRIPTION);
 
   /** The maximum number of prior execution attempts kept in history. */
   public static final ConfigOption<Integer> MAX_ATTEMPTS_HISTORY_SIZE =
@@ -277,10 +166,4 @@ public class JobManagerOptions {
           .defaultValue(true)
           .withDescription(
               "Controls whether partitions should already be released during the job execution.");
-
-  // ---------------------------------------------------------------------------------------------
-
-  private JobManagerOptions() {
-    throw new IllegalAccessError();
-  }
 }

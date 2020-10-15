@@ -14,7 +14,7 @@ import xyz.vopen.framework.neptune.common.configuration.command.CommandLineParse
 import xyz.vopen.framework.neptune.common.configuration.command.NeptuneConfiguration;
 import xyz.vopen.framework.neptune.common.configuration.command.NeptuneConfigurationParserFactory;
 import xyz.vopen.framework.neptune.common.exceptions.NeptuneParseException;
-import xyz.vopen.framework.neptune.core.entrypoint.DefaultNeptuneEntrypoint;
+import xyz.vopen.framework.neptune.core.entrypoint.EmbedNeptuneEntrypoint;
 import xyz.vopen.framework.neptune.core.entrypoint.NeptuneEntrypoint;
 
 import javax.annotation.Nonnull;
@@ -84,8 +84,8 @@ public class NeptuneServerAutoConfiguration {
           System.exit(1);
         }
 
-        DefaultNeptuneEntrypoint entrypoint =
-            new DefaultNeptuneEntrypoint(loadConfigurationFromNeptuneConfig(neptuneConfiguration));
+        EmbedNeptuneEntrypoint entrypoint =
+            new EmbedNeptuneEntrypoint(loadConfigurationFromNeptuneConfig(neptuneConfiguration));
 
         NeptuneEntrypoint.runApplicationEntrypoint(entrypoint);
       }

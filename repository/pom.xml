@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>api</module>
-        <module>mongo</module>
+        <module>rocksdb</module>
     </modules>
 
     <artifactId>mixmicro-neptune-repository</artifactId>
@@ -27,7 +27,7 @@
             </dependency>
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-neptune-repository-mongo</artifactId>
+                <artifactId>mixmicro-neptune-repository-rocksdb</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

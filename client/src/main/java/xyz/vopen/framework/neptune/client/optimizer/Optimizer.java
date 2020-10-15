@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.core.optimizer;
+package xyz.vopen.framework.neptune.client.optimizer;
 
 /**
  * {@link Optimizer}
