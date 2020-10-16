@@ -13,4 +13,10 @@
     <artifactId>mixmicro-neptune-example</artifactId>
     <name>Neptune Example Module</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>xyz.vopen.framework</groupId>
+            <artifactId>mixmicro-neptune-rpc</artifactId>
+        </dependency>
+    </dependencies>
 </project>

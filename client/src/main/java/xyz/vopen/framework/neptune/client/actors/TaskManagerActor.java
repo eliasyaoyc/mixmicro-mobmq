@@ -3,7 +3,7 @@ package xyz.vopen.framework.neptune.client.actors;
 import akka.actor.AbstractActor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xyz.vopen.framework.neptune.client.model.request.*;
+import xyz.vopen.framework.neptune.common.message.request.*;
 
 /**
  * {@link TaskManagerActor} Used for receive request from JobManager and task.

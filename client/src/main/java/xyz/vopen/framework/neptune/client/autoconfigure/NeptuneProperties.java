@@ -12,5 +12,15 @@ import static xyz.vopen.framework.neptune.client.autoconfigure.NeptuneProperties
  */
 @ConfigurationProperties(prefix = MIXMIRO_NEPTUNE_CLIENT_PROPERTIES_PREFIX)
 public class NeptuneProperties {
-    static final String MIXMIRO_NEPTUNE_CLIENT_PROPERTIES_PREFIX = "mixmicro.neptune.client";
+  static final String MIXMIRO_NEPTUNE_CLIENT_PROPERTIES_PREFIX = "mixmicro.neptune.client";
+
+  private int port;
+
+  public int getPort() {
+    return port;
+  }
+
+  public void setPort(int port) {
+    this.port = port;
+  }
 }

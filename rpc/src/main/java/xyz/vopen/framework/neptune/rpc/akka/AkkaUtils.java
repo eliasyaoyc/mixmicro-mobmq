@@ -452,70 +452,10 @@ public class AkkaUtils {
     double serverSocketWorkerPoolPoolSizeFactor =
         configuration.getDouble(AkkaOptions.SERVER_SOCKET_WORKER_POOL_SIZE_FACTOR);
 
-    //    String configString =
-    //        "akka {"
-    //            + "  actor {"
-    //            + "    provider = \"akka.remote.RemoteActorRefProvider\""
-    //            + "  }"
-    //            + ""
-    //            + "  remote {"
-    //            + "    startup-timeout = "
-    //            + startupTimeout
-    //            + ""
-    //            + "    transport-failure-detector{"
-    //            + "      acceptable-heartbeat-pause = "
-    //            + transportHeartbeatPause
-    //            + "      heartbeat-interval = "
-    //            + transportHeartbeatInterval
-    //            + "      threshold = "
-    //            + transportThreshold
-    //            + "    }"
-    //            + ""
-    //            + "    netty {"
-    //            + "      tcp {"
-    //            + "        transport-class = \"akka.remote.transport.netty.NettyTransport\""
-    //            + "        port = "
-    //            + externalPort
-    //            + "        bind-port = "
-    //            + port
-    //            + "        connection-timeout = "
-    //            + akkaTCPTimeout
-    //            + "        maximum-frame-size = "
-    //            + akkaFrameSize
-    //            + "        tcp-nodelay = on"
-    //            + ""
-    //            + "        client-socket-worker-pool {"
-    //            + "          pool-size-min = "
-    //            + clientSocketWorkerPoolPoolSizeMin
-    //            + "          pool-size-max = "
-    //            + clientSocketWorkerPoolPoolSizeMax
-    //            + "          pool-size-factor = "
-    //            + clientSocketWorkerPoolPoolSizeFactor
-    //            + "        }"
-    //            + ""
-    //            + "        server-socket-worker-pool {"
-    //            + "          pool-size-min = "
-    //            + serverSocketWorkerPoolPoolSizeMin
-    //            + "          pool-size-max = "
-    //            + serverSocketWorkerPoolPoolSizeMax
-    //            + "          pool-size-factor = "
-    //            + serverSocketWorkerPoolPoolSizeFactor
-    //            + "        }"
-    //            + "      }"
-    //            + "    }"
-    //            + ""
-    //            + "    log-remote-lifecycle-events = "
-    //            + logLifecycleEvents
-    //            + ""
-    //            + "    retry-gate-closed-for = {"
-    //            + retryGateClosedFor
-    //            + "\" ms\"}"
-    //            + "  }"
-    //            + "}";
-
     String configString =
         "akka {\n"
             + "  actor {\n"
+            + "    allow-java-serialization = \"on\"\n"
             + "    provider = \"akka.remote.RemoteActorRefProvider\"\n"
             + "  }\n"
             + "\n"
@@ -594,19 +534,6 @@ public class AkkaUtils {
       effectiveHostname = normalizedExternalHostname;
     }
 
-    //    String hostnameConfigString =
-    //        "akka {"
-    //            + "  remote {"
-    //            + "    netty {"
-    //            + "      tcp {"
-    //            + "        hostname = "
-    //            + effectiveHostname
-    //            + "        bind-hostname = "
-    //            + bindAddress
-    //            + "      }"
-    //            + "    }"
-    //            + "  }"
-    //            + "}";
     String hostnameConfigString =
         "akka {\n"
             + "  remote {\n"

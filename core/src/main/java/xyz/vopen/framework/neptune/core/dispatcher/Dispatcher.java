@@ -40,9 +40,10 @@ public abstract class Dispatcher extends RpcEndpoint implements DispatcherGatewa
 
   public Dispatcher(
       final Configuration configuration,
+      final String gatewayName,
       final FatalErrorHandler fatalErrorHandler,
       final RpcService rpcService) {
-    super(rpcService);
+    super(rpcService,gatewayName);
     Preconditions.checkNotNull(configuration, "Configuration is null");
 
     this.configuration = configuration;

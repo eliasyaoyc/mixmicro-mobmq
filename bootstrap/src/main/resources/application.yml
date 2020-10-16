@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Neptune-Server
+
+mixmicro:
+  neptune:
+    server:
+      enabled: true
+      job-manager-rpc-address: localhost
+      job-manager-rpc-port:
+      job-manager-bind-host:
+      job-manager-rpc-bind-port:

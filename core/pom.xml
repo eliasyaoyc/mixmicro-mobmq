@@ -20,16 +20,7 @@
         </dependency>
         <dependency>
             <groupId>xyz.vopen.framework</groupId>
-            <artifactId>mixmicro-neptune-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>xyz.vopen.framework</groupId>
             <artifactId>mixmicro-neptune-repository-rocksdb</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alipay.sofa</groupId>
-            <artifactId>jraft-core</artifactId>
         </dependency>
 
         <dependency>

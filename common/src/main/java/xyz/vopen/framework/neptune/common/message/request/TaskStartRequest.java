@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.client.model.request;
+package xyz.vopen.framework.neptune.common.message.request;
 
 /**
  * {@link TaskStartRequest}

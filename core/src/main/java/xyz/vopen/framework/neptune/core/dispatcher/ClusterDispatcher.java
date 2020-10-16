@@ -16,9 +16,7 @@ public class ClusterDispatcher extends Dispatcher {
   private static final Logger logger = LoggerFactory.getLogger(ClusterDispatcher.class);
 
   ClusterDispatcher(
-      Configuration configuration,
-      FatalErrorHandler fatalErrorHandler,
-      RpcService rpcService) {
-    super(configuration, fatalErrorHandler, rpcService);
+      Configuration configuration, FatalErrorHandler fatalErrorHandler, RpcService rpcService) {
+    super(configuration, ClusterDispatcher.class.getSimpleName(), fatalErrorHandler, rpcService);
   }
 }
