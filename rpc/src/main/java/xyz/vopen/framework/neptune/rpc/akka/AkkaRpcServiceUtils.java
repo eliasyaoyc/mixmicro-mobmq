@@ -329,7 +329,7 @@ public class AkkaRpcServiceUtils {
                 externalAddress,
                 externalPortRange,
                 bindAddress,
-                Optional.ofNullable(bindAddress),
+                Optional.ofNullable(bindPort),
                 logger,
                 actorSystemExecutorConfiguration,
                 customConfig);

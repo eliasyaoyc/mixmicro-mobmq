@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class NeptuneClient implements ApplicationContextAware, AutoCloseableAsync {
   private static final Logger logger = LoggerFactory.getLogger(NeptuneClient.class);
 
-  private static final String NEPTUNE_CLIENT_AKKA_CONF = "neptune-client.akka.conf";
+  private static final String NEPTUNE_CLIENT_AKKA_CONF = "default.neptune.client.akka.conf";
 
   private final @Nonnull NeptuneProperties neptuneProperties;
   private final CompletableFuture<Void> terminatedFuture;
