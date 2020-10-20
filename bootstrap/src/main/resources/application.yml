@@ -7,6 +7,6 @@ mixmicro:
     server:
       enabled: true
       job-manager-rpc-address: localhost
-      job-manager-rpc-port:
-      job-manager-bind-host:
-      job-manager-rpc-bind-port:
+      job-manager-rpc-port: 25510
+      job-manager-bind-host: localhost
+      job-manager-rpc-bind-port: 25510

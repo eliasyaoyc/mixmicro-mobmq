@@ -14,6 +14,7 @@ public interface Alarm {
 
   enum AlarmEnum {
     EMAIL,
-    MESSAGE;
+    MESSAGE,
+    WOCOM;
   }
 }

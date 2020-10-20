@@ -16,8 +16,6 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class AkkaRpcServiceConfiguration {
 
-  private final @NotNull Configuration configuration;
-
   private final @NotNull Time timeout;
 
   private final long maximumFrameSize;
@@ -25,20 +23,12 @@ public class AkkaRpcServiceConfiguration {
   private final boolean captureAskCallStack;
 
   public AkkaRpcServiceConfiguration(
-      @NotNull Configuration configuration,
-      @NotNull Time timeout,
-      long maximumFrameSize,
-      boolean captureAskCallStack) {
+      @NotNull Time timeout, long maximumFrameSize, boolean captureAskCallStack) {
 
     checkArgument(maximumFrameSize > 0L, "Maximum frameSize must be positive.");
-    this.configuration = configuration;
     this.timeout = timeout;
     this.maximumFrameSize = maximumFrameSize;
     this.captureAskCallStack = captureAskCallStack;
-  }
-
-  public @NotNull Configuration getConfiguration() {
-    return this.configuration;
   }
 
   public @NotNull Time getTimeout() {
@@ -61,8 +51,7 @@ public class AkkaRpcServiceConfiguration {
     final boolean captureAskCallStacks =
         (boolean) configuration.get(AkkaOptions.CAPTURE_ASK_CALLSTACK);
 
-    return new AkkaRpcServiceConfiguration(
-        configuration, timeout, maximumFrameSize, captureAskCallStacks);
+    return new AkkaRpcServiceConfiguration(timeout, maximumFrameSize, captureAskCallStacks);
   }
 
   public static AkkaRpcServiceConfiguration defaultConfiguration() {

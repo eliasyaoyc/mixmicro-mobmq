@@ -11,6 +11,7 @@ import xyz.vopen.framework.neptune.core.exceptions.DispatcherException;
 import xyz.vopen.framework.neptune.core.jobmanager.JobManager;
 import xyz.vopen.framework.neptune.core.persistence.Persistence;
 import xyz.vopen.framework.neptune.core.persistence.PersistenceFactory;
+import xyz.vopen.framework.neptune.rpc.DispatcherGateway;
 import xyz.vopen.framework.neptune.rpc.FatalErrorHandler;
 import xyz.vopen.framework.neptune.rpc.RpcEndpoint;
 import xyz.vopen.framework.neptune.rpc.RpcService;

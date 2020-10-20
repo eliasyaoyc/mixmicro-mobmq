@@ -10,7 +10,6 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface Persistence {
 
-
   void initialize();
 
   CompletableFuture<Void> persist();

@@ -42,5 +42,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>xyz.vopen.framework</groupId>
+            <artifactId>mixmicro-neptune-repository-mysql</artifactId>
+        </dependency>
     </dependencies>
 </project>

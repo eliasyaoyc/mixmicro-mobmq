@@ -10,6 +10,6 @@ import org.slf4j.LoggerFactory;
  * @version ${project.version} - 2020/10/5
  */
 public abstract class BroadcastProcessor implements BasicProcessor {
-  private static final Logger logger = LoggerFactory.getLogger(BroadcastProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(BroadcastProcessor.class);
 
 }

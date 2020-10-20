@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
  * @version ${project.version} - 2020/10/14
  */
 public class MessageAlarmService extends AlarmService {
-  private static final Logger logger = LoggerFactory.getLogger(MessageAlarmService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MessageAlarmService.class);
 
   private final Configuration configuration;
 

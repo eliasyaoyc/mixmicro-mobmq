@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>xyz.vopen.framework</groupId>
-            <artifactId>mixmicro-neptune-repository-rocksdb</artifactId>
+            <artifactId>mixmicro-neptune-repository-mysql</artifactId>
         </dependency>
 
         <dependency>

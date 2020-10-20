@@ -1,30 +1,34 @@
 package xyz.vopen.framework.neptune.core.persistence;
 
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
-import xyz.vopen.framework.neptune.core.persistence.support.PersistenceAdapter;
+import xyz.vopen.framework.neptune.common.configuration.JobManagerOptions;
+import xyz.vopen.framework.neptune.common.model.ServerInfo;
+import xyz.vopen.framework.neptune.core.persistence.adapter.PersistenceAdapter;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * {@link DefaultPersistence}
+ * {@link DefaultPersistence} Implementation for {@link Persistence}.Provides the ability of
+ * initialize, persist.
  *
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
  * @version ${project.version} - 2020/10/13
  */
 public class DefaultPersistence implements Persistence {
-  private static final Logger logger = LoggerFactory.getLogger(DefaultPersistence.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DefaultPersistence.class);
 
   private final @Nonnull Configuration configuration;
-  private final PersistenceAdapter persistenceAdapter;
+  private final @Nonnull PersistenceAdapter persistenceAdapter;
 
   private DefaultPersistence(
-      final Configuration configuration, final PersistenceAdapter persistenceAdapter) {
-    this.configuration = configuration;
+      final @Nonnull Configuration configuration,
+      final @Nonnull PersistenceAdapter persistenceAdapter) {
     this.persistenceAdapter = persistenceAdapter;
-
+    this.configuration = configuration;
     initialize();
   }
 
@@ -34,10 +38,20 @@ public class DefaultPersistence implements Persistence {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    String serverName = configuration.getString(JobManagerOptions.NAME);
+    Preconditions.checkNotNull(serverName, "Server name is empty.");
+
+    ServerInfo serverInfo = persistenceAdapter.queryServerByName(serverName);
+    if (serverInfo != null) {
+      // ignore
+    } else {
+      persistenceAdapter.saveServerInfo(ServerInfo.builder().build());
+    }
+  }
 
   @Override
   public CompletableFuture<Void> persist() {
-    return persistenceAdapter.persist();
+    return null;
   }
 }

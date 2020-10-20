@@ -9,6 +9,10 @@ public class JobManagerOptions {
     throw new IllegalAccessError();
   }
 
+  public static final ConfigOption<String> NAME =
+      key("jobmanager.name")
+          .noDefaultValue()
+          .withDescription("The config parameter defining the jobmanager name");
   /**
    * The config parameter defining the network address to connect to for communication with the job
    * manager.

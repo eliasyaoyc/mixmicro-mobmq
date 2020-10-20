@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mixmicro-neptune</artifactId>
+        <groupId>xyz.vopen.framework</groupId>
+        <version>${revision}</version>
+        <relativePath>../</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mixmicro-neptune-optimizer</artifactId>
+    <name>Mixmicro Neptune Optimizer Module</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>xyz.vopen.framework</groupId>
+            <artifactId>mixmicro-neptune-common</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -10,5 +10,5 @@ import org.slf4j.LoggerFactory;
  * @version ${project.version} - 2020/10/5
  */
 public abstract class MapProcessor implements BasicProcessor {
-  private static final Logger logger = LoggerFactory.getLogger(MapProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MapProcessor.class);
 }

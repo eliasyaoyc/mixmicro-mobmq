@@ -1,9 +1,9 @@
 package xyz.vopen.framework.neptune.core.persistence;
 
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
-import xyz.vopen.framework.neptune.core.persistence.support.DefaultPersistenceAdapter;
-import xyz.vopen.framework.neptune.core.persistence.support.MongoPersistenceAdapter;
-import xyz.vopen.framework.neptune.core.persistence.support.PersistenceAdapter;
+import xyz.vopen.framework.neptune.core.persistence.adapter.DefaultPersistenceAdapter;
+import xyz.vopen.framework.neptune.core.persistence.adapter.MongoPersistenceAdapter;
+import xyz.vopen.framework.neptune.core.persistence.adapter.PersistenceAdapter;
 
 import javax.annotation.Nonnull;
 

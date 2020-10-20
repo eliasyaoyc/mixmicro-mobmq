@@ -10,5 +10,5 @@ import org.slf4j.LoggerFactory;
  * @version ${project.version} - 2020/10/5
  */
 public abstract class MapReduceProcessor extends MapProcessor {
-  private static final Logger logger = LoggerFactory.getLogger(MapReduceProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MapReduceProcessor.class);
 }

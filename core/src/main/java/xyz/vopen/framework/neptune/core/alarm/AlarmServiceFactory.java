@@ -21,6 +21,8 @@ public enum AlarmServiceFactory {
         return EmailAlarmService.create(configuration);
       case MESSAGE:
         return MessageAlarmService.create(configuration);
+      case WOCOM:
+        return WecomAlarmService.create(configuration);
       default:
         throw new IllegalArgumentException("Current alarm fashion is not support.");
     }

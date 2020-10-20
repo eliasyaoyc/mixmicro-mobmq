@@ -42,7 +42,7 @@ public class ExecutorThreadFactory implements ThreadFactory {
   private final @Nullable UncaughtExceptionHandler exceptionHandler;
 
   /**
-   * Creates a new thread factory using the default thread pool name ('flink-executor-pool') and the
+   * Creates a new thread factory using the default thread pool name ('neptune-executor-pool') and the
    * default uncaught exception handler (log exception and kill process).
    */
   public ExecutorThreadFactory() {

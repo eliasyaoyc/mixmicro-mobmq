@@ -127,7 +127,7 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
       Dispatcher dispatcher =
           DefaultDispatcherFactory.INSTANCE.create(configuration, this, rpcService);
 
-      dispatcher.start();
+      dispatcher.internalCallOnStart();
 
       dispatcher
           .getShutDownFuture()

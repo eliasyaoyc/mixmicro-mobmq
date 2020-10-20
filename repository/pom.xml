@@ -12,7 +12,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>api</module>
-        <module>rocksdb</module>
+        <module>mongo</module>
+        <module>mysql</module>
     </modules>
 
     <artifactId>mixmicro-neptune-repository</artifactId>
@@ -27,7 +28,12 @@
             </dependency>
             <dependency>
                 <groupId>xyz.vopen.framework</groupId>
-                <artifactId>mixmicro-neptune-repository-rocksdb</artifactId>
+                <artifactId>mixmicro-neptune-repository-mongo</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.vopen.framework</groupId>
+                <artifactId>mixmicro-neptune-repository-mysql</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

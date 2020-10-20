@@ -10,5 +10,5 @@ import org.slf4j.LoggerFactory;
  * @version ${project.version} - 2020/10/5
  */
 public class TaskManager {
-  private static final Logger logger = LoggerFactory.getLogger(TaskManager.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TaskManager.class);
 }

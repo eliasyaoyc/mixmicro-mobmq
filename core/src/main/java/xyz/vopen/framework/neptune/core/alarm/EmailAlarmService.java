@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
  * @version ${project.version} - 2020/10/14
  */
 public class EmailAlarmService extends AlarmService {
-  private static final Logger logger = LoggerFactory.getLogger(EmailAlarmService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(EmailAlarmService.class);
 
   private final Configuration configuration;
 

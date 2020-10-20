@@ -25,6 +25,16 @@
         </dependency>
 
         <dependency>
+            <groupId>xyz.vopen.framework</groupId>
+            <artifactId>mixmicro-neptune-optimizer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.vopen.framework</groupId>
+            <artifactId>mixmicro-neptune-repository-mysql</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <scope>provided</scope>
