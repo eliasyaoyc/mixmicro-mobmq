@@ -1,5 +1,7 @@
 package xyz.vopen.framework.neptune.core.highavailability;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * {@link HighAvailability}
  *
@@ -7,4 +9,8 @@ package xyz.vopen.framework.neptune.core.highavailability;
  * @version ${project.version} - 2020/10/15
  */
 public interface HighAvailability {
+
+  void start();
+
+  CompletableFuture<Void> stop();
 }

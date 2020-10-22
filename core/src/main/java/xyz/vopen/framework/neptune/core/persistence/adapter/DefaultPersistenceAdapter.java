@@ -2,6 +2,7 @@ package xyz.vopen.framework.neptune.core.persistence.adapter;
 
 import com.google.common.base.Preconditions;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
+import xyz.vopen.framework.neptune.common.model.JobInfo;
 import xyz.vopen.framework.neptune.common.model.ServerInfo;
 import xyz.vopen.framework.repository.mysql.MysqlRepository;
 
@@ -29,19 +30,44 @@ public class DefaultPersistenceAdapter implements PersistenceAdapter {
   }
 
   @Override
-  public ServerInfo queryServerByName(@Nonnull String serverName) {
+  public Optional<ServerInfo> queryServerByName(@Nonnull String serverName) {
     Optional<ServerInfo> serverInfo = mysqlRepository.queryServerByName(serverName);
-    return serverInfo.get();
+    return serverInfo;
   }
 
   @Override
-  public List<ServerInfo> queryServers() {
+  public Optional<List<ServerInfo>> queryServers() {
     Optional<List<ServerInfo>> serverInfos = mysqlRepository.queryServers();
-    return serverInfos.get();
+    return serverInfos;
   }
 
   @Override
   public void saveServerInfo(@Nonnull ServerInfo serverInfo) {
-    int i = mysqlRepository.saveServerInfo(serverInfo);
+    mysqlRepository.saveServerInfo(serverInfo);
+  }
+
+  @Override
+  public Optional<JobInfo> findJobById(String jobId) {
+    return mysqlRepository.findJobById(jobId);
+  }
+
+  @Override
+  public Optional<List<JobInfo>> findJobByAppId(String appId) {
+    return mysqlRepository.findJobByAppId(appId);
+  }
+
+  @Override
+  public Optional<List<JobInfo>> findJobByAppIdAndName(String appId, String name) {
+    return mysqlRepository.findJobByAppIdAndName(appId, name);
+  }
+
+  @Override
+  public void saveJobInfo(JobInfo jobInfo) {
+    mysqlRepository.saveJobInfo(jobInfo);
+  }
+
+  @Override
+  public void updateJobInfo(JobInfo jobInfo) {
+    mysqlRepository.updateJobInfo(jobInfo);
   }
 }

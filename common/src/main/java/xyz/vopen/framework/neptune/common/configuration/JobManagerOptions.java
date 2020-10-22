@@ -13,6 +13,12 @@ public class JobManagerOptions {
       key("jobmanager.name")
           .noDefaultValue()
           .withDescription("The config parameter defining the jobmanager name");
+
+  public static final ConfigOption<String> ALARM_TYPE =
+      key("jobmanager.alarm.type")
+          .noDefaultValue()
+          .withDescription(
+              "The config parameter defining the jobmanager alarm type,e.g. email,message,wecom etc.");
   /**
    * The config parameter defining the network address to connect to for communication with the job
    * manager.

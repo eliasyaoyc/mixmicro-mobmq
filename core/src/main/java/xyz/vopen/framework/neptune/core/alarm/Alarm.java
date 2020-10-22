@@ -12,6 +12,10 @@ public interface Alarm {
 
   CompletableFuture<Void> sendAlarm();
 
+  CompletableFuture<Void> stop();
+
+  void start();
+
   enum AlarmEnum {
     EMAIL,
     MESSAGE,

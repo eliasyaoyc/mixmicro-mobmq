@@ -12,9 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
+import xyz.vopen.framework.neptune.common.model.InstanceInfo;
 import xyz.vopen.framework.neptune.common.model.JobInfo;
 import xyz.vopen.framework.neptune.common.model.ServerInfo;
 import xyz.vopen.framework.neptune.repository.api.BaseRepository;
+import xyz.vopen.framework.neptune.repository.api.InstanceInfoRepository;
 import xyz.vopen.framework.neptune.repository.api.JobRepository;
 import xyz.vopen.framework.neptune.repository.api.ServerRepository;
 
@@ -22,6 +24,7 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static xyz.vopen.framework.neptune.common.configuration.PersistenceOptions.*;
@@ -32,7 +35,8 @@ import static xyz.vopen.framework.neptune.common.configuration.PersistenceOption
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
  * @version ${project.version} - 2020/10/20
  */
-public class MysqlRepository implements BaseRepository, ServerRepository, JobRepository {
+public class MysqlRepository
+    implements BaseRepository, ServerRepository, JobRepository, InstanceInfoRepository {
   private static final Logger LOG = LoggerFactory.getLogger(MysqlRepository.class);
 
   private final Configuration configuration;
@@ -325,11 +329,153 @@ public class MysqlRepository implements BaseRepository, ServerRepository, JobRep
                 jobInfo.getId()),
             ar -> {
               if (ar.succeeded()) {
-                RowSet<Row> result = ar.result();
-                long lastInsertId = result.property(MySQLClient.LAST_INSERTED_ID);
-                LOG.info("[MysqlRepository] updateJobInfo Last inserted id is: {}", lastInsertId);
+
               } else {
-                LOG.error("[MysqlRepository] failure: {}", ar.cause().getMessage());
+                LOG.error("[MysqlRepository] updateJobInfo failure: {}", ar.cause().getMessage());
+              }
+            });
+  }
+
+  /**
+   * Delete the job by specified job id.
+   *
+   * @param jobId
+   */
+  @Override
+  public void deleteJobInfos(Long jobId) {
+    client
+        .preparedQuery("DELETE FROM job_info WHERE id = ?")
+        .execute(
+            Tuple.of(jobId),
+            ar -> {
+              if (ar.succeeded()) {
+
+              } else {
+                LOG.error("[MysqlRepository] deleteJobInfos failure: {}", ar.cause().getMessage());
+              }
+            });
+  }
+
+  @Override
+  public long countByJobIdAndStatus(long jobId, List<Integer> status) {
+    AtomicLong count = new AtomicLong();
+    client
+        .preparedQuery("SELECT (*) FROM instance_info WHERE id = ? AND status in (?)")
+        .execute(
+            Tuple.of(jobId, status),
+            ar -> {
+              if (ar.succeeded()) {
+                count.set(ar.result().iterator().next().getColumnIndex("count"));
+              } else {
+                LOG.error(
+                    "[MysqlRepository] countByJobIdAndStatus failure: {}", ar.cause().getMessage());
+              }
+            });
+    return count.get();
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findByJobIdAndStatus(long jobId, List<Integer> status) {
+    AtomicReference<List<InstanceInfo>> instanceInfos = null;
+    client
+        .preparedQuery("SELECT * FROM instance_info WHERE id = ? and status in (?)")
+        .execute(
+            Tuple.of(jobId, status),
+            ar -> {
+              if (ar.succeeded()) {
+                RowSet<Row> result = ar.result();
+                try {
+                  List ret = convert(result, InstanceInfo.class);
+                  if (!CollectionUtils.isEmpty(ret)) {
+                    instanceInfos.set(ret);
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+            });
+
+    return Optional.ofNullable(instanceInfos.get());
+  }
+
+  @Override
+  public void saveInstanceInfo(InstanceInfo instanceInfo) {
+    client
+        .preparedQuery(
+            "INSERT INTO instance_info (id,app_id,job_id,job_params,trigger_time,completed_time,last_report_time,"
+                + "execute_time,result,status,type,work_flow_id,task_address,retry_times,gmt_create,gmt_update) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+        .execute(
+            Tuple.of(
+                instanceInfo.getId(),
+                instanceInfo.getAppId(),
+                instanceInfo.getJobId(),
+                instanceInfo.getJobParams(),
+                instanceInfo.getTriggerTime(),
+                instanceInfo.getCompletedTime(),
+                instanceInfo.getLastReportTime(),
+                instanceInfo.getExecuteTime(),
+                instanceInfo.getResult(),
+                instanceInfo.getStatus(),
+                instanceInfo.getType(),
+                instanceInfo.getWorkFlowId(),
+                instanceInfo.getTaskAddress(),
+                instanceInfo.getRetryTimes()),
+            ar -> {
+              if (ar.succeeded()) {
+                LOG.info(
+                    "[MysqlRepository] saveInstanceInfo success insert id: {}",
+                    ar.result().property(MySQLClient.LAST_INSERTED_ID));
+              } else {
+                LOG.error(
+                    "[MysqlRepository] saveInstanceInfo failure: {}", ar.cause().getMessage());
+              }
+            });
+  }
+
+  @Override
+  public void updateInstanceInfo(InstanceInfo instanceInfo) {
+    client
+        .preparedQuery(
+            "UPDATE instance_info SET app_id = ?,job_id = ?, job_params = ?, trigger_time = ?,"
+                + "completed_time = ?,last_report_time = ?,execute_time = ?,result = ?,status = ?,type = ?,"
+                + "work_flow_id = ?,task_address = ?,retry_times = ? WHERE  id = ?")
+        .execute(
+            Tuple.of(
+                instanceInfo.getAppId(),
+                instanceInfo.getJobId(),
+                instanceInfo.getJobParams(),
+                instanceInfo.getTriggerTime(),
+                instanceInfo.getCompletedTime(),
+                instanceInfo.getLastReportTime(),
+                instanceInfo.getExecuteTime(),
+                instanceInfo.getResult(),
+                instanceInfo.getStatus(),
+                instanceInfo.getType(),
+                instanceInfo.getWorkFlowId(),
+                instanceInfo.getTaskAddress(),
+                instanceInfo.getRetryTimes(),
+                instanceInfo.getId()),
+            ar -> {
+              if (ar.succeeded()) {
+
+              } else {
+                LOG.error(
+                    "[MysqlRepository] updateInstanceInfo failure: {}", ar.cause().getMessage());
+              }
+            });
+  }
+
+  @Override
+  public void deleteInstance(Long instanceId) {
+    client
+        .preparedQuery("DELETE FROM instance_info WHERE id = ?")
+        .execute(
+            Tuple.of(instanceId),
+            ar -> {
+              if (ar.succeeded()) {
+
+              } else {
+                LOG.error("[MysqlRepository] deleteInstance failure: {}", ar.cause().getMessage());
               }
             });
   }

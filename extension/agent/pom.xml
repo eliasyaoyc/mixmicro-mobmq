@@ -14,4 +14,43 @@
     <artifactId>mixmicro-neptune-extension-agent</artifactId>
     <name>Neptune Extension Agent</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>xyz.vopen.framework</groupId>
+            <artifactId>mixmicro-neptune-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.vopen.framework</groupId>
+            <artifactId>mixmicro-neptune-client</artifactId>
+        </dependency>
+
+        <!-- java cli -->
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <mainClass>xyz.vopen.framework.neptune.extension.agent.MainApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal><!--可以把依赖的包都打包到生成的Jar包中-->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

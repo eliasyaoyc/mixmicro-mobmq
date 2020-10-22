@@ -12,10 +12,17 @@ import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 import xyz.vopen.framework.neptune.common.utils.ExecutorStUtil;
 import xyz.vopen.framework.neptune.common.utils.ExecutorThreadFactory;
 import xyz.vopen.framework.neptune.common.utils.ShutdownHookUtil;
+import xyz.vopen.framework.neptune.core.alarm.Alarm;
+import xyz.vopen.framework.neptune.core.alarm.AlarmServiceFactory;
 import xyz.vopen.framework.neptune.core.autoconfigure.NeptuneServerAutoConfiguration;
 import xyz.vopen.framework.neptune.core.dispatcher.DefaultDispatcherFactory;
 import xyz.vopen.framework.neptune.core.dispatcher.Dispatcher;
 import xyz.vopen.framework.neptune.core.exceptions.NeptuneEntrypointException;
+import xyz.vopen.framework.neptune.core.highavailability.HighAvailabilityService;
+import xyz.vopen.framework.neptune.core.metrics.MetricService;
+import xyz.vopen.framework.neptune.core.persistence.Persistence;
+import xyz.vopen.framework.neptune.core.persistence.PersistenceFactory;
+import xyz.vopen.framework.neptune.core.schedule.SchedulerService;
 import xyz.vopen.framework.neptune.rpc.FatalErrorHandler;
 import xyz.vopen.framework.neptune.rpc.RpcService;
 import xyz.vopen.framework.neptune.rpc.akka.AkkaRpcServiceUtils;
@@ -45,12 +52,21 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
   private final Configuration configuration;
   private RpcService rpcService;
   private ExecutorService ioExecutor;
+  private final Alarm alarm;
+  private final MetricService metricService;
+  private final HighAvailabilityService haService;
   private final Thread shutDownHook;
+  private final SchedulerService schedulerService;
   private CompletableFuture<ApplicationStatus> terminationFuture;
   private final AtomicBoolean isShutDown = new AtomicBoolean(false);
 
   protected NeptuneEntrypoint(Configuration configuration) {
     this.configuration = configuration;
+    this.alarm = AlarmServiceFactory.INSTANCE.create(configuration);
+    this.metricService = MetricService.createMetricService(configuration, rpcService);
+    this.haService = HighAvailabilityService.createFromConfiguration(configuration, rpcService);
+    Persistence persistence = PersistenceFactory.INSTANCE.create(configuration);
+    this.schedulerService = new SchedulerService(configuration, rpcService, persistence);
     this.terminationFuture = new CompletableFuture();
     this.shutDownHook =
         ShutdownHookUtil.addShutdownHook(
@@ -202,7 +218,7 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
     synchronized (lock) {
       Throwable exception = null;
 
-      final Collection<CompletableFuture<Void>> terminationFutures = new ArrayList<>(3);
+      final Collection<CompletableFuture<Void>> terminationFutures = new ArrayList<>(5);
 
       if (this.ioExecutor != null) {
         terminationFutures.add(
@@ -211,6 +227,14 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
 
       if (this.rpcService != null) {
         terminationFutures.add(rpcService.stopService());
+      }
+
+      if (this.alarm != null) {
+        terminationFutures.add(alarm.stop());
+      }
+
+      if (this.haService != null) {
+        terminationFutures.add(haService.stop());
       }
 
       if (exception != null) {
@@ -227,7 +251,7 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
   /**
    * Clean up of temporary directories create by {@link NeptuneEntrypoint}.
    *
-   * @throws IOException Thrown when the tmeporary directories could not be clean up.
+   * @throws IOException Thrown when the temporary directories could not be clean up.
    */
   private void cleanupDirectories() throws IOException {
     ShutdownHookUtil.removeShutdownHook(shutDownHook, getClass().getSimpleName(), logger);

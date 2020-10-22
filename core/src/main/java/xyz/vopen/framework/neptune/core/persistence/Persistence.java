@@ -1,6 +1,6 @@
 package xyz.vopen.framework.neptune.core.persistence;
 
-import java.util.concurrent.CompletableFuture;
+import xyz.vopen.framework.neptune.core.persistence.adapter.PersistenceAdapter;
 
 /**
  * {@link Persistence}
@@ -12,7 +12,7 @@ public interface Persistence {
 
   void initialize();
 
-  CompletableFuture<Void> persist();
+  PersistenceAdapter getPersistenceAdapter();
 
   enum PersistenceEnum {
     MONGO;

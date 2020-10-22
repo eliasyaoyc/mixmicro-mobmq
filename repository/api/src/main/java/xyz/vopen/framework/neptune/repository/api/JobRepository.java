@@ -53,4 +53,11 @@ public interface JobRepository extends BaseRepository {
    * @return
    */
   void updateJobInfo(JobInfo jobInfo);
+
+  /**
+   * Delete the job by specified job id.
+   *
+   * @param jobId
+   */
+  void deleteJobInfos(Long jobId);
 }

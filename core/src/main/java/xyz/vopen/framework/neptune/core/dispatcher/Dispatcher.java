@@ -8,7 +8,6 @@ import xyz.vopen.framework.neptune.common.enums.ApplicationStatus;
 import xyz.vopen.framework.neptune.common.time.Time;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 import xyz.vopen.framework.neptune.core.exceptions.DispatcherException;
-import xyz.vopen.framework.neptune.core.jobmanager.JobManager;
 import xyz.vopen.framework.neptune.core.persistence.Persistence;
 import xyz.vopen.framework.neptune.core.persistence.PersistenceFactory;
 import xyz.vopen.framework.neptune.rpc.DispatcherGateway;
@@ -23,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * {@link Dispatcher} Base class for the Dispatcher component. The Dispatcher component is
- * responsible for receiving job submissions,persisting them, spawning {@link JobManager} to execute
+ * responsible for receiving job submissions,persisting them, spawning Server to execute
  * the jobs and to recover them in case of a master failure. Furthermore, it knows the state of the
  * Neptune session cluster.
  *

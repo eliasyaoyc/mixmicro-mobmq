@@ -9,7 +9,6 @@ import xyz.vopen.framework.neptune.common.model.ServerInfo;
 import xyz.vopen.framework.neptune.core.persistence.adapter.PersistenceAdapter;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * {@link DefaultPersistence} Implementation for {@link Persistence}.Provides the ability of
@@ -51,7 +50,7 @@ public class DefaultPersistence implements Persistence {
   }
 
   @Override
-  public CompletableFuture<Void> persist() {
-    return null;
+  public PersistenceAdapter getPersistenceAdapter() {
+    return this.persistenceAdapter;
   }
 }
