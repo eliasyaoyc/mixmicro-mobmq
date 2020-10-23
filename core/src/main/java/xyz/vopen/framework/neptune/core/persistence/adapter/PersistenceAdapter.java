@@ -1,5 +1,6 @@
 package xyz.vopen.framework.neptune.core.persistence.adapter;
 
+import xyz.vopen.framework.neptune.common.model.InstanceInfo;
 import xyz.vopen.framework.neptune.common.model.JobInfo;
 import xyz.vopen.framework.neptune.common.model.ServerInfo;
 
@@ -44,7 +45,7 @@ public interface PersistenceAdapter {
    * @param jobId of job.
    * @return Job collection.
    */
-  Optional<JobInfo> findJobById(String jobId);
+  Optional<JobInfo> findJobById(long jobId);
 
   /**
    * Returns the specify job collection under server.
@@ -52,7 +53,7 @@ public interface PersistenceAdapter {
    * @param appId Represent the server id.
    * @return Job collection.
    */
-  Optional<List<JobInfo>> findJobByAppId(String appId);
+  Optional<List<JobInfo>> findJobByAppId(long appId);
 
   /**
    * Returns the specify job collection through appId and job name.
@@ -61,7 +62,7 @@ public interface PersistenceAdapter {
    * @param name of job.
    * @return Job collection.
    */
-  Optional<List<JobInfo>> findJobByAppIdAndName(String appId, String name);
+  Optional<List<JobInfo>> findJobByAppIdAndName(long appId, String name);
 
   /**
    * Save the job message.
@@ -78,4 +79,18 @@ public interface PersistenceAdapter {
    * @return
    */
   void updateJobInfo(JobInfo jobInfo);
+
+  long countByJobIdAndStatus(long jobId, List<Integer> status);
+
+  Optional<InstanceInfo> findByInstanceId(long instanceId);
+
+  Optional<List<InstanceInfo>> findByJobIdAndStatus(long jobId, List<Integer> status);
+
+  Optional<List<InstanceInfo>> findInstancesByAppId(long appId);
+
+  void saveInstanceInfo(InstanceInfo instanceInfo);
+
+  void updateInstanceInfo(InstanceInfo instanceInfo);
+
+  void deleteInstance(Long instanceIds);
 }

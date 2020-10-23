@@ -154,7 +154,7 @@ public class MysqlRepository
    * @return Job collection.
    */
   @Override
-  public Optional<JobInfo> findJobById(String jobId) {
+  public Optional<JobInfo> findJobById(long jobId) {
     AtomicReference<JobInfo> jobInfo = null;
     client
         .preparedQuery("SELECT * FROM job_info WHERE id = ? ")
@@ -184,7 +184,7 @@ public class MysqlRepository
    * @return Job collection.
    */
   @Override
-  public Optional<List<JobInfo>> findJobByAppId(String appId) {
+  public Optional<List<JobInfo>> findJobByAppId(long appId) {
     AtomicReference<List<JobInfo>> jobInfo = null;
     client
         .preparedQuery("SELECT * FROM job_info WHERE app_id = ?")
@@ -215,7 +215,7 @@ public class MysqlRepository
    * @return Job collection.
    */
   @Override
-  public Optional<List<JobInfo>> findJobByAppIdAndName(String appId, String name) {
+  public Optional<List<JobInfo>> findJobByAppIdAndName(long appId, String name) {
     AtomicReference<List<JobInfo>> jobInfo = null;
     client
         .preparedQuery("SELECT * FROM job_info WHERE app_id = ? and name = ?")
@@ -375,12 +375,60 @@ public class MysqlRepository
   }
 
   @Override
+  public Optional<InstanceInfo> findByInstanceId(long instanceId) {
+    AtomicReference<InstanceInfo> instanceInfo = null;
+    client
+        .preparedQuery("SELECT * FROM instance_info WHERE id = ? ")
+        .execute(
+            Tuple.of(instanceId),
+            ar -> {
+              if (ar.succeeded()) {
+                RowSet<Row> result = ar.result();
+                try {
+                  List ret = convert(result, InstanceInfo.class);
+                  if (!CollectionUtils.isEmpty(ret)) {
+                    instanceInfo.set((InstanceInfo) ret.get(0));
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+            });
+
+    return Optional.ofNullable(instanceInfo.get());
+  }
+
+  @Override
   public Optional<List<InstanceInfo>> findByJobIdAndStatus(long jobId, List<Integer> status) {
     AtomicReference<List<InstanceInfo>> instanceInfos = null;
     client
-        .preparedQuery("SELECT * FROM instance_info WHERE id = ? and status in (?)")
+        .preparedQuery("SELECT * FROM instance_info WHERE job_id = ? and status in (?)")
         .execute(
             Tuple.of(jobId, status),
+            ar -> {
+              if (ar.succeeded()) {
+                RowSet<Row> result = ar.result();
+                try {
+                  List ret = convert(result, InstanceInfo.class);
+                  if (!CollectionUtils.isEmpty(ret)) {
+                    instanceInfos.set(ret);
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+            });
+
+    return Optional.ofNullable(instanceInfos.get());
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findInstancesByAppId(long appId) {
+    AtomicReference<List<InstanceInfo>> instanceInfos = null;
+    client
+        .preparedQuery("SELECT * FROM instance_info WHERE app_id = ?")
+        .execute(
+            Tuple.of(appId),
             ar -> {
               if (ar.succeeded()) {
                 RowSet<Row> result = ar.result();

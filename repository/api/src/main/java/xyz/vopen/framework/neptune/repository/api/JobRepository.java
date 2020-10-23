@@ -19,7 +19,7 @@ public interface JobRepository extends BaseRepository {
    * @param jobId of job.
    * @return Job collection.
    */
-  Optional<JobInfo> findJobById(String jobId);
+  Optional<JobInfo> findJobById(long jobId);
 
   /**
    * Returns the specify job collection under server.
@@ -27,7 +27,7 @@ public interface JobRepository extends BaseRepository {
    * @param appId Represent the server id.
    * @return Job collection.
    */
-  Optional<List<JobInfo>> findJobByAppId(String appId);
+  Optional<List<JobInfo>> findJobByAppId(long appId);
 
   /**
    * Returns the specify job collection through appId and job name.
@@ -36,7 +36,7 @@ public interface JobRepository extends BaseRepository {
    * @param name of job.
    * @return Job collection.
    */
-  Optional<List<JobInfo>> findJobByAppIdAndName(String appId, String name);
+  Optional<List<JobInfo>> findJobByAppIdAndName(long appId, String name);
 
   /**
    * Save the job message.

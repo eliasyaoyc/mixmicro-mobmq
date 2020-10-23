@@ -1,6 +1,7 @@
 package xyz.vopen.framework.neptune.core.persistence.adapter;
 
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
+import xyz.vopen.framework.neptune.common.model.InstanceInfo;
 import xyz.vopen.framework.neptune.common.model.JobInfo;
 import xyz.vopen.framework.neptune.common.model.ServerInfo;
 
@@ -36,17 +37,17 @@ public class MongoPersistenceAdapter implements PersistenceAdapter {
   public void saveServerInfo(@Nonnull ServerInfo serverInfo) {}
 
   @Override
-  public Optional<JobInfo> findJobById(String jobId) {
+  public Optional<JobInfo> findJobById(long jobId) {
     return Optional.empty();
   }
 
   @Override
-  public Optional<List<JobInfo>> findJobByAppId(String appId) {
+  public Optional<List<JobInfo>> findJobByAppId(long appId) {
     return Optional.empty();
   }
 
   @Override
-  public Optional<List<JobInfo>> findJobByAppIdAndName(String appId, String name) {
+  public Optional<List<JobInfo>> findJobByAppIdAndName(long appId, String name) {
     return Optional.empty();
   }
 
@@ -55,4 +56,39 @@ public class MongoPersistenceAdapter implements PersistenceAdapter {
 
   @Override
   public void updateJobInfo(JobInfo jobInfo) {}
+
+  @Override
+  public long countByJobIdAndStatus(long jobId, List<Integer> status) {
+    return 0;
+  }
+
+  @Override
+  public Optional<InstanceInfo> findByInstanceId(long instanceId) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findByJobIdAndStatus(long jobId, List<Integer> status) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findInstancesByAppId(long appId) {
+    return Optional.empty();
+  }
+
+  @Override
+  public void saveInstanceInfo(InstanceInfo instanceInfo) {
+
+  }
+
+  @Override
+  public void updateInstanceInfo(InstanceInfo instanceInfo) {
+
+  }
+
+  @Override
+  public void deleteInstance(Long instanceIds) {
+
+  }
 }

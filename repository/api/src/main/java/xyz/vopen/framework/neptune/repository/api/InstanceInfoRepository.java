@@ -15,7 +15,11 @@ public interface InstanceInfoRepository {
 
   long countByJobIdAndStatus(long jobId, List<Integer> status);
 
+  Optional<InstanceInfo> findByInstanceId(long instanceId);
+
   Optional<List<InstanceInfo>> findByJobIdAndStatus(long jobId, List<Integer> status);
+
+  Optional<List<InstanceInfo>> findInstancesByAppId(long appId);
 
   void saveInstanceInfo(InstanceInfo instanceInfo);
 

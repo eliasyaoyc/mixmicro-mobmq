@@ -41,7 +41,7 @@ public class InstanceInfo {
   /** Execution results (allowing to store larger results) */
   private String result;
   /** Trigger time */
-  private Date TriggerTime;
+  private Date triggerTime;
 
   private Date completedTime;
 
@@ -54,7 +54,7 @@ public class InstanceInfo {
   private String taskAddress;
 
   private Date gmtCreate;
-  private Date gmtModified;
+  private Date gmtUpdate;
 
   public InstanceInfo(
       Long id,
@@ -72,7 +72,7 @@ public class InstanceInfo {
       Integer retryTimes,
       String taskAddress,
       Date gmtCreate,
-      Date gmtModified) {
+      Date gmtUpdate) {
     this.id = id;
     this.appId = appId;
     this.jobId = jobId;
@@ -81,14 +81,14 @@ public class InstanceInfo {
     this.workFlowId = workFlowId;
     this.status = status;
     this.result = result;
-    TriggerTime = triggerTime;
+    this.triggerTime = triggerTime;
     this.completedTime = completedTime;
     this.lastReportTime = lastReportTime;
     this.executeTime = executeTime;
     this.retryTimes = retryTimes;
     this.taskAddress = taskAddress;
     this.gmtCreate = gmtCreate;
-    this.gmtModified = gmtModified;
+    this.gmtUpdate = gmtUpdate;
   }
 
   public Long getId() {
@@ -156,11 +156,11 @@ public class InstanceInfo {
   }
 
   public Date getTriggerTime() {
-    return TriggerTime;
+    return triggerTime;
   }
 
   public void setTriggerTime(Date triggerTime) {
-    TriggerTime = triggerTime;
+    triggerTime = triggerTime;
   }
 
   public Date getCompletedTime() {
@@ -211,11 +211,11 @@ public class InstanceInfo {
     this.gmtCreate = gmtCreate;
   }
 
-  public Date getGmtModified() {
-    return gmtModified;
+  public Date getGmtUpdate() {
+    return gmtUpdate;
   }
 
-  public void setGmtModified(Date gmtModified) {
-    this.gmtModified = gmtModified;
+  public void setGmtUpdate(Date gmtUpdate) {
+    this.gmtUpdate = gmtUpdate;
   }
 }

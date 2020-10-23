@@ -1,5 +1,6 @@
 package xyz.vopen.framework.neptune.core.entrypoint;
 
+import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.vopen.framework.neptune.common.AutoCloseableAsync;
@@ -58,16 +59,25 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
   private final Thread shutDownHook;
   private final SchedulerService schedulerService;
   private CompletableFuture<ApplicationStatus> terminationFuture;
+  private final Persistence persistence;
+  private EventBus eventBus;
+
   private final AtomicBoolean isShutDown = new AtomicBoolean(false);
+
+  {
+    eventBus = new EventBus();
+    EventRegister.registerEvent();
+  }
 
   protected NeptuneEntrypoint(Configuration configuration) {
     this.configuration = configuration;
     this.alarm = AlarmServiceFactory.INSTANCE.create(configuration);
     this.metricService = MetricService.createMetricService(configuration, rpcService);
     this.haService = HighAvailabilityService.createFromConfiguration(configuration, rpcService);
-    Persistence persistence = PersistenceFactory.INSTANCE.create(configuration);
-    this.schedulerService = new SchedulerService(configuration, rpcService, persistence);
+    this.persistence = PersistenceFactory.INSTANCE.create(configuration);
+    this.schedulerService = new SchedulerService(configuration, rpcService, persistence,eventBus);
     this.terminationFuture = new CompletableFuture();
+
     this.shutDownHook =
         ShutdownHookUtil.addShutdownHook(
             this::cleanupDirectories, getClass().getSimpleName(), logger);
@@ -141,7 +151,7 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
       initializerServices(configuration);
 
       Dispatcher dispatcher =
-          DefaultDispatcherFactory.INSTANCE.create(configuration, this, rpcService);
+          DefaultDispatcherFactory.INSTANCE.create(configuration, this, rpcService, persistence);
 
       dispatcher.internalCallOnStart();
 
@@ -268,5 +278,12 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
   public void onFatalError(Throwable exception) {
     logger.error("Fatal error occurred in the cluster entrypoint.", exception);
     System.exit(RUNTIME_FAILURE_RETURN_CODE);
+  }
+
+  static class EventRegister {
+
+    public static void registerEvent() {
+
+    }
   }
 }

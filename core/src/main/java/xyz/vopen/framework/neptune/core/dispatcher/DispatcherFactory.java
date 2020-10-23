@@ -1,6 +1,7 @@
 package xyz.vopen.framework.neptune.core.dispatcher;
 
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
+import xyz.vopen.framework.neptune.core.persistence.Persistence;
 import xyz.vopen.framework.neptune.rpc.FatalErrorHandler;
 import xyz.vopen.framework.neptune.rpc.RpcService;
 
@@ -23,6 +24,7 @@ public interface DispatcherFactory {
   Dispatcher create(
       Configuration configuration,
       FatalErrorHandler fatalErrorHandler,
-      RpcService rpcService)
+      RpcService rpcService,
+      Persistence persistence)
       throws Exception;
 }

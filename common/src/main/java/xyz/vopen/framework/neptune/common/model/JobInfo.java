@@ -68,6 +68,9 @@ public class JobInfo {
   private Date gmtCreate;
   private Date gmtUpdate;
 
+  public JobInfo() {
+  }
+
   public JobInfo(
       Long id,
       String jobName,

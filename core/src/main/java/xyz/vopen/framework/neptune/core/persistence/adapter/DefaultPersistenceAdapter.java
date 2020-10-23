@@ -2,6 +2,7 @@ package xyz.vopen.framework.neptune.core.persistence.adapter;
 
 import com.google.common.base.Preconditions;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
+import xyz.vopen.framework.neptune.common.model.InstanceInfo;
 import xyz.vopen.framework.neptune.common.model.JobInfo;
 import xyz.vopen.framework.neptune.common.model.ServerInfo;
 import xyz.vopen.framework.repository.mysql.MysqlRepository;
@@ -47,17 +48,17 @@ public class DefaultPersistenceAdapter implements PersistenceAdapter {
   }
 
   @Override
-  public Optional<JobInfo> findJobById(String jobId) {
+  public Optional<JobInfo> findJobById(long jobId) {
     return mysqlRepository.findJobById(jobId);
   }
 
   @Override
-  public Optional<List<JobInfo>> findJobByAppId(String appId) {
+  public Optional<List<JobInfo>> findJobByAppId(long appId) {
     return mysqlRepository.findJobByAppId(appId);
   }
 
   @Override
-  public Optional<List<JobInfo>> findJobByAppIdAndName(String appId, String name) {
+  public Optional<List<JobInfo>> findJobByAppIdAndName(long appId, String name) {
     return mysqlRepository.findJobByAppIdAndName(appId, name);
   }
 
@@ -69,5 +70,40 @@ public class DefaultPersistenceAdapter implements PersistenceAdapter {
   @Override
   public void updateJobInfo(JobInfo jobInfo) {
     mysqlRepository.updateJobInfo(jobInfo);
+  }
+
+  @Override
+  public long countByJobIdAndStatus(long jobId, List<Integer> status) {
+    return mysqlRepository.countByJobIdAndStatus(jobId, status);
+  }
+
+  @Override
+  public Optional<InstanceInfo> findByInstanceId(long instanceId) {
+    return mysqlRepository.findByInstanceId(instanceId);
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findByJobIdAndStatus(long jobId, List<Integer> status) {
+    return mysqlRepository.findByJobIdAndStatus(jobId, status);
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findInstancesByAppId(long appId) {
+    return mysqlRepository.findInstancesByAppId(appId);
+  }
+
+  @Override
+  public void saveInstanceInfo(InstanceInfo instanceInfo) {
+    mysqlRepository.saveInstanceInfo(instanceInfo);
+  }
+
+  @Override
+  public void updateInstanceInfo(InstanceInfo instanceInfo) {
+    mysqlRepository.updateInstanceInfo(instanceInfo);
+  }
+
+  @Override
+  public void deleteInstance(Long instanceIds) {
+    mysqlRepository.deleteInstance(instanceIds);
   }
 }

@@ -9,6 +9,7 @@ import xyz.vopen.framework.neptune.common.model.ServerInfo;
 import xyz.vopen.framework.neptune.core.persistence.adapter.PersistenceAdapter;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * {@link DefaultPersistence} Implementation for {@link Persistence}.Provides the ability of
@@ -41,8 +42,8 @@ public class DefaultPersistence implements Persistence {
     String serverName = configuration.getString(JobManagerOptions.NAME);
     Preconditions.checkNotNull(serverName, "Server name is empty.");
 
-    ServerInfo serverInfo = persistenceAdapter.queryServerByName(serverName);
-    if (serverInfo != null) {
+    Optional<ServerInfo> serverInfo = persistenceAdapter.queryServerByName(serverName);
+    if (!serverInfo.isPresent()) {
       // ignore
     } else {
       persistenceAdapter.saveServerInfo(ServerInfo.builder().build());

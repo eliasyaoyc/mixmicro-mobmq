@@ -1,10 +1,13 @@
 package xyz.vopen.framework.neptune.core.dispatcher;
 
 import com.google.common.base.Preconditions;
+import com.google.common.eventbus.Subscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
 import xyz.vopen.framework.neptune.common.enums.ApplicationStatus;
+import xyz.vopen.framework.neptune.common.event.DispatchJobEvent;
+import xyz.vopen.framework.neptune.common.event.ReDispatchJobEvent;
 import xyz.vopen.framework.neptune.common.time.Time;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 import xyz.vopen.framework.neptune.core.exceptions.DispatcherException;
@@ -22,9 +25,9 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * {@link Dispatcher} Base class for the Dispatcher component. The Dispatcher component is
- * responsible for receiving job submissions,persisting them, spawning Server to execute
- * the jobs and to recover them in case of a master failure. Furthermore, it knows the state of the
- * Neptune session cluster.
+ * responsible for receiving job submissions,persisting them, spawning Server to execute the jobs
+ * and to recover them in case of a master failure. Furthermore, it knows the state of the Neptune
+ * session cluster.
  *
  * @author <a href="mailto:siran0611@gmail.com">Elias.Yao</a>
  * @version ${project.version} - 2020/10/12
@@ -43,7 +46,7 @@ public abstract class Dispatcher extends RpcEndpoint implements DispatcherGatewa
       final String gatewayName,
       final FatalErrorHandler fatalErrorHandler,
       final RpcService rpcService) {
-    super(rpcService,gatewayName);
+    super(rpcService, gatewayName);
     Preconditions.checkNotNull(configuration, "Configuration is null");
 
     this.configuration = configuration;
@@ -54,6 +57,22 @@ public abstract class Dispatcher extends RpcEndpoint implements DispatcherGatewa
         PersistenceFactory.INSTANCE.create(configuration, Persistence.PersistenceEnum.MONGO);
     this.shutDownFuture = new CompletableFuture<>();
   }
+
+  /**
+   * Dispatch tasks from Server to Worker.
+   *
+   * @param dispatchJobEvent {@link DispatchJobEvent} instance.
+   */
+  @Subscribe
+  public abstract void dispatcher(DispatchJobEvent dispatchJobEvent);
+
+  /**
+   * Redispatch task from Server to Worker.
+   *
+   * @param reDispatchJobEvent {@link ReDispatchJobEvent} instance.
+   */
+  @Subscribe
+  public abstract void reDispatcher(ReDispatchJobEvent reDispatchJobEvent);
 
   // =====================   Lifecycle methods  =====================
   @Override
