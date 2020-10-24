@@ -9,7 +9,7 @@ import xyz.vopen.framework.neptune.common.configuration.AkkaOptions;
 import xyz.vopen.framework.neptune.common.configuration.ConfigOption;
 import xyz.vopen.framework.neptune.common.configuration.ConfigOptions;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
-import xyz.vopen.framework.neptune.common.tuple.Tuple2;
+import xyz.vopen.framework.neptune.common.utils.tuple.Tuple2;
 import xyz.vopen.framework.neptune.common.utils.NetUtils;
 import xyz.vopen.framework.neptune.rpc.akka.AkkaUtils;
 

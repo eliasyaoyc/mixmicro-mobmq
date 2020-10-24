@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import xyz.vopen.framework.neptune.client.NeptuneClientEntrypoint;
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 import xyz.vopen.framework.neptune.rpc.RpcService;
 import xyz.vopen.framework.neptune.rpc.akka.AkkaRpcService;

@@ -3,7 +3,7 @@ package xyz.vopen.framework.neptune.rpc;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 import xyz.vopen.framework.neptune.common.AutoCloseableAsync;
 import xyz.vopen.framework.neptune.common.concurrent.ComponentMainThreadExecutor;
 import xyz.vopen.framework.neptune.common.concurrent.ScheduledFutureAdapter;

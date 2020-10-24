@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.common.time;
+package xyz.vopen.framework.neptune.common.utils.time;
 
 import xyz.vopen.framework.neptune.common.annoations.Internal;
 

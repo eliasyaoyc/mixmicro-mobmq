@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.common.tuple;
+package xyz.vopen.framework.neptune.common.utils.tuple;
 
 /**
  * A tuple with 1 fields. Tuples are strongly typed; each field may be of a separate type. The

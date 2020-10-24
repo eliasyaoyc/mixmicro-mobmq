@@ -2,7 +2,7 @@ package xyz.vopen.framework.neptune.rpc.akka;
 
 import xyz.vopen.framework.neptune.common.configuration.AkkaOptions;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 
 import javax.validation.constraints.NotNull;
 

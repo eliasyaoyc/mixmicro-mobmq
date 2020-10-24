@@ -1,6 +1,6 @@
 package xyz.vopen.framework.neptune.rpc;
 
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;

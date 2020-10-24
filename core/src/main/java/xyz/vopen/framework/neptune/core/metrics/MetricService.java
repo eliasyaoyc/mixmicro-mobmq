@@ -3,7 +3,7 @@ package xyz.vopen.framework.neptune.core.metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 import xyz.vopen.framework.neptune.rpc.RpcEndpoint;
 import xyz.vopen.framework.neptune.rpc.RpcService;
 

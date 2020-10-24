@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.common.event;
+package xyz.vopen.framework.neptune.common.model.event;
 
 /**
  * {@link Event}

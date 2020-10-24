@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.common.time.timewheel;
+package xyz.vopen.framework.neptune.common.utils.time.timewheel;
 
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-import static xyz.vopen.framework.neptune.common.time.timewheel.HashedWheelTimer.TaskStatus.*;
+import static xyz.vopen.framework.neptune.common.utils.time.timewheel.HashedWheelTimer.TaskStatus.*;
 
 /**
  * {@link HashedWheelTimer} Time wheel like Netty.

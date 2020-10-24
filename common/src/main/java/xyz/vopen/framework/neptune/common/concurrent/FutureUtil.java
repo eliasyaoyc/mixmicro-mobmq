@@ -2,8 +2,8 @@ package xyz.vopen.framework.neptune.common.concurrent;
 
 import akka.dispatch.OnComplete;
 import scala.concurrent.Future;
-import xyz.vopen.framework.neptune.common.time.Deadline;
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Deadline;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 import xyz.vopen.framework.neptune.common.utils.ExecutorThreadFactory;
 

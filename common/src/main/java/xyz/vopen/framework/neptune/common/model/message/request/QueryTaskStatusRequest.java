@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.common.message.request;
+package xyz.vopen.framework.neptune.common.model.message.request;
 
 import java.io.Serializable;
 

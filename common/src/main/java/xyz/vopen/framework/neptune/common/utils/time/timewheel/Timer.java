@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.common.time.timewheel;
+package xyz.vopen.framework.neptune.common.utils.time.timewheel;
 
 import java.util.Set;
 import java.util.concurrent.TimeUnit;

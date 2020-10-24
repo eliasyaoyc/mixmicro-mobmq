@@ -1,6 +1,6 @@
 package xyz.vopen.framework.neptune.core.metrics;
 
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 import xyz.vopen.framework.neptune.rpc.RpcGateway;
 import xyz.vopen.framework.neptune.rpc.RpcTimeout;
 

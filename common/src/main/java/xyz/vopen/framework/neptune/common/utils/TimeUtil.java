@@ -1,6 +1,6 @@
 package xyz.vopen.framework.neptune.common.utils;
 
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;

@@ -1,4 +1,4 @@
-package xyz.vopen.framework.neptune.common.tuple;
+package xyz.vopen.framework.neptune.common.utils.tuple;
 
 import xyz.vopen.framework.neptune.common.exceptions.NullFieldException;
 

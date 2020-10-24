@@ -1,7 +1,7 @@
 package xyz.vopen.framework.neptune.rpc;
 
 import akka.actor.ActorSystem;
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 import xyz.vopen.framework.neptune.rpc.akka.AkkaRpcService;
 import xyz.vopen.framework.neptune.rpc.akka.AkkaRpcServiceConfiguration;
 import xyz.vopen.framework.neptune.rpc.akka.AkkaUtils;

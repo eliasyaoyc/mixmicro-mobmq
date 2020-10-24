@@ -4,8 +4,8 @@ import akka.actor.AbstractActor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.vopen.framework.neptune.client.taskmaster.TaskManager;
-import xyz.vopen.framework.neptune.common.message.request.TaskStartRequest;
-import xyz.vopen.framework.neptune.common.message.request.TaskStopRequest;
+import xyz.vopen.framework.neptune.common.model.message.request.TaskStartRequest;
+import xyz.vopen.framework.neptune.common.model.message.request.TaskStopRequest;
 
 /**
  * {@link SlotActor} Real Processor node that process requests from {@link TaskManager}.

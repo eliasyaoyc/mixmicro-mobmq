@@ -8,7 +8,7 @@ import xyz.vopen.framework.neptune.common.concurrent.FutureUtil;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
 import xyz.vopen.framework.neptune.common.configuration.JobManagerOptions;
 import xyz.vopen.framework.neptune.common.enums.ApplicationStatus;
-import xyz.vopen.framework.neptune.common.time.Time;
+import xyz.vopen.framework.neptune.common.utils.time.Time;
 import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
 import xyz.vopen.framework.neptune.common.utils.ExecutorStUtil;
 import xyz.vopen.framework.neptune.common.utils.ExecutorThreadFactory;
