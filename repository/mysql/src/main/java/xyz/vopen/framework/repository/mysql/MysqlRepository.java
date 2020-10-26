@@ -238,6 +238,30 @@ public class MysqlRepository
     return Optional.ofNullable(jobInfo.get());
   }
 
+  @Override
+  public Optional<List<JobInfo>> findJobByAppIdAndStatus(long appId, int status) {
+    AtomicReference<List<JobInfo>> jobInfo = null;
+    client
+        .preparedQuery("SELECT * FROM job_info WHERE app_id = ? and status = ?")
+        .execute(
+            Tuple.of(appId, status),
+            ar -> {
+              if (ar.succeeded()) {
+                RowSet<Row> result = ar.result();
+                try {
+                  List ret = convert(result, JobInfo.class);
+                  if (!CollectionUtils.isEmpty(ret)) {
+                    jobInfo.set(ret);
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+            });
+
+    return Optional.ofNullable(jobInfo.get());
+  }
+
   /**
    * Save the job message.
    *
@@ -429,6 +453,30 @@ public class MysqlRepository
         .preparedQuery("SELECT * FROM instance_info WHERE app_id = ?")
         .execute(
             Tuple.of(appId),
+            ar -> {
+              if (ar.succeeded()) {
+                RowSet<Row> result = ar.result();
+                try {
+                  List ret = convert(result, InstanceInfo.class);
+                  if (!CollectionUtils.isEmpty(ret)) {
+                    instanceInfos.set(ret);
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+            });
+
+    return Optional.ofNullable(instanceInfos.get());
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findInstancesByAppIdAndStatus(long appId, int status) {
+    AtomicReference<List<InstanceInfo>> instanceInfos = null;
+    client
+        .preparedQuery("SELECT * FROM instance_info WHERE app_id = ? AND status = ?")
+        .execute(
+            Tuple.of(appId, status),
             ar -> {
               if (ar.succeeded()) {
                 RowSet<Row> result = ar.result();

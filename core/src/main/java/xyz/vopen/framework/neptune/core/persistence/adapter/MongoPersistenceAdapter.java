@@ -47,6 +47,11 @@ public class MongoPersistenceAdapter implements PersistenceAdapter {
   }
 
   @Override
+  public Optional<List<JobInfo>> findJobByAppIdAndStatus(long appId, int status) {
+    return Optional.empty();
+  }
+
+  @Override
   public Optional<List<JobInfo>> findJobByAppIdAndName(long appId, String name) {
     return Optional.empty();
   }
@@ -74,6 +79,11 @@ public class MongoPersistenceAdapter implements PersistenceAdapter {
 
   @Override
   public Optional<List<InstanceInfo>> findInstancesByAppId(long appId) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findInstancesByAppIdAndStatus(long appId, int status) {
     return Optional.empty();
   }
 

@@ -55,6 +55,8 @@ public interface PersistenceAdapter {
    */
   Optional<List<JobInfo>> findJobByAppId(long appId);
 
+  Optional<List<JobInfo>> findJobByAppIdAndStatus(long appId, int status);
+
   /**
    * Returns the specify job collection through appId and job name.
    *
@@ -87,6 +89,8 @@ public interface PersistenceAdapter {
   Optional<List<InstanceInfo>> findByJobIdAndStatus(long jobId, List<Integer> status);
 
   Optional<List<InstanceInfo>> findInstancesByAppId(long appId);
+
+  Optional<List<InstanceInfo>> findInstancesByAppIdAndStatus(long appId, int status);
 
   void saveInstanceInfo(InstanceInfo instanceInfo);
 

@@ -7,6 +7,7 @@ package xyz.vopen.framework.neptune.common.enums;
  * @version ${project.version} - 2020/10/23
  */
 public enum InstanceStatus {
+  INIT(0, "init instance"),
   WAITING_DISPATCH(1, "wait for dispatch"),
   WAITING_WORKER_RECEIVE(2, "wait for worker received"),
   RUNNING(3, "running"),

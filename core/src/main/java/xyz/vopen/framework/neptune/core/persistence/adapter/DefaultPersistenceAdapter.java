@@ -58,6 +58,11 @@ public class DefaultPersistenceAdapter implements PersistenceAdapter {
   }
 
   @Override
+  public Optional<List<JobInfo>> findJobByAppIdAndStatus(long appId, int status) {
+    return mysqlRepository.findJobByAppIdAndStatus(appId,status);
+  }
+
+  @Override
   public Optional<List<JobInfo>> findJobByAppIdAndName(long appId, String name) {
     return mysqlRepository.findJobByAppIdAndName(appId, name);
   }
@@ -90,6 +95,11 @@ public class DefaultPersistenceAdapter implements PersistenceAdapter {
   @Override
   public Optional<List<InstanceInfo>> findInstancesByAppId(long appId) {
     return mysqlRepository.findInstancesByAppId(appId);
+  }
+
+  @Override
+  public Optional<List<InstanceInfo>> findInstancesByAppIdAndStatus(long appId, int status) {
+    return mysqlRepository.findInstancesByAppIdAndStatus(appId,status);
   }
 
   @Override

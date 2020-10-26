@@ -23,7 +23,9 @@ public class InstanceInfo {
   private Long workFlowId;
 
   /**
-   * 1-waiting dispatch
+   * 0-init
+   *
+   * <p>1-waiting dispatch
    *
    * <p>2-waiting worker receive
    *
@@ -217,5 +219,119 @@ public class InstanceInfo {
 
   public void setGmtUpdate(Date gmtUpdate) {
     this.gmtUpdate = gmtUpdate;
+  }
+
+  // =====================   Builder  =====================
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static class Builder {
+    private Long id;
+    private Long appId;
+    private Long jobId;
+    private String jobParams;
+    private Integer type;
+    private Long workFlowId;
+    private Integer status;
+    private String result;
+    private Date triggerTime;
+    private Date completedTime;
+    private Date lastReportTime;
+    private Date executeTime;
+    private Integer retryTimes;
+    private String taskAddress;
+    private Date gmtCreate;
+    private Date gmtUpdate;
+
+    public Builder id(Long id){
+      this.id = id;
+      return this;
+    }
+
+    public Builder appId(Long appId){
+      this.appId = appId;
+      return this;
+    }
+
+    public Builder jobId(Long jobId){
+      this.jobId = jobId;
+      return this;
+    }
+
+    public Builder jobParams(String jobParams){
+      this.jobParams = jobParams;
+      return this;
+    }
+
+    public Builder type(Integer type){
+      this.type = type;
+      return this;
+    }
+
+    public Builder workFlowId(Long workFlowId){
+      this.workFlowId = workFlowId;
+      return this;
+    }
+
+    public Builder status(Integer status){
+      this.status = status;
+      return this;
+    }
+
+    public Builder result(String result){
+      this.result = result;
+      return this;
+    }
+
+    public Builder triggerTime(Date triggerTime){
+      this.triggerTime = triggerTime;
+      return this;
+    }
+
+    public Builder completedTime(Date completedTime){
+      this.completedTime = completedTime;
+      return this;
+    }
+
+    public Builder lastReportTime(Date lastReportTime){
+      this.lastReportTime = lastReportTime;
+      return this;
+    }
+
+    public Builder executeTime(Date executeTime){
+      this.executeTime = executeTime;
+      return this;
+    }
+
+    public Builder retryTimes(Integer retryTimes){
+      this.retryTimes = retryTimes;
+      return this;
+    }
+
+    public Builder taskAddress(String taskAddress){
+      this.taskAddress = taskAddress;
+      return this;
+    }
+
+    public InstanceInfo build() {
+      return new InstanceInfo(
+          id,
+          appId,
+          jobId,
+          jobParams,
+          type,
+          workFlowId,
+          status,
+          result,
+          triggerTime,
+          completedTime,
+          lastReportTime,
+          executeTime,
+          retryTimes,
+          taskAddress,
+          gmtCreate,
+          gmtUpdate);
+    }
   }
 }

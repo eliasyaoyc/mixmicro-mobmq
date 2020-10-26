@@ -7,22 +7,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.vopen.framework.neptune.common.configuration.Configuration;
 import xyz.vopen.framework.neptune.common.constants.InstanceResult;
+import xyz.vopen.framework.neptune.common.enums.ExpressionType;
+import xyz.vopen.framework.neptune.common.enums.JobStatus;
+import xyz.vopen.framework.neptune.common.model.InstanceInfo;
+import xyz.vopen.framework.neptune.common.model.JobInfo;
 import xyz.vopen.framework.neptune.common.model.event.DispatchJobEvent;
 import xyz.vopen.framework.neptune.common.model.event.JobStatusChangeEvent;
 import xyz.vopen.framework.neptune.common.model.event.ReDispatchJobEvent;
-import xyz.vopen.framework.neptune.common.model.InstanceInfo;
-import xyz.vopen.framework.neptune.common.model.JobInfo;
-import xyz.vopen.framework.neptune.common.model.ServerInfo;
+import xyz.vopen.framework.neptune.common.utils.*;
 import xyz.vopen.framework.neptune.common.utils.time.timewheel.HashedWheelTimer;
-import xyz.vopen.framework.neptune.common.utils.ExceptionUtil;
-import xyz.vopen.framework.neptune.common.utils.ExecutorStUtil;
-import xyz.vopen.framework.neptune.common.utils.ExecutorThreadFactory;
-import xyz.vopen.framework.neptune.common.utils.NetUtils;
 import xyz.vopen.framework.neptune.core.persistence.Persistence;
 import xyz.vopen.framework.neptune.core.persistence.adapter.PersistenceAdapter;
 import xyz.vopen.framework.neptune.rpc.RpcService;
 
 import javax.annotation.Nonnull;
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +40,10 @@ import static xyz.vopen.framework.neptune.common.enums.InstanceStatus.*;
  */
 public class SchedulerService {
   private static final Logger LOG = LoggerFactory.getLogger(SchedulerService.class);
-
+  private static final long SERVER_STATUS_CHECKER_INITIAL_DELAY = 5000;
+  private static final long SERVER_STATUS_CHECKER_DELAY = 10000;
+  private static final long TASK_ACQUIRE_INITIAL_DELAY = 2000;
+  private static final long TASK_ACQUIRE_DELAY = 5000;
   private static final String SCHEDULER_THREAD_POOL_NAME = "scheduler";
   private static final int MAX_BATCH = 10;
   private static final long DISPATCH_TIMEOUT_MS = 30000;
@@ -62,16 +64,19 @@ public class SchedulerService {
     this.rpcService = rpcService;
     this.persistenceAdapter = persistence.getPersistenceAdapter();
     this.eventBus = eventBus;
-    this.hashedWheelTimer = new HashedWheelTimer(5, 16, 0);
+    this.hashedWheelTimer = HashedWheelTimer.defaultWheelTimer();
     this.scheduledThreadPoolExecutor =
         new ScheduledThreadPoolExecutor(3, new ExecutorThreadFactory(SCHEDULER_THREAD_POOL_NAME));
   }
 
   public void start() {
     scheduledThreadPoolExecutor.scheduleWithFixedDelay(
-        new ServerStatusChecker(), 5000, 10000, TimeUnit.MILLISECONDS);
+        new TasksStatusChecker(),
+        SERVER_STATUS_CHECKER_INITIAL_DELAY,
+        SERVER_STATUS_CHECKER_DELAY,
+        TimeUnit.MILLISECONDS);
     scheduledThreadPoolExecutor.scheduleWithFixedDelay(
-        new TaskAcquirer(), 2000, 5000, TimeUnit.MILLISECONDS);
+        new TaskAcquirer(), TASK_ACQUIRE_INITIAL_DELAY, TASK_ACQUIRE_DELAY, TimeUnit.MILLISECONDS);
     scheduledThreadPoolExecutor.schedule(new LogCleaner(), 7, TimeUnit.DAYS);
   }
 
@@ -191,21 +196,129 @@ public class SchedulerService {
             .build());
   }
 
-  // ===================== SCHEDULERS =====================
+  /**
+   * Schedule job that the expression type is CRON.
+   *
+   * @param jobInfo {@link JobInfo} instance.
+   */
+  private void scheduleCronJob(JobInfo jobInfo) {
+    InstanceInfo instanceInfo = generateInstanceRecord(jobInfo);
+    persistenceAdapter.saveInstanceInfo(instanceInfo);
+    LOG.info("[scheduleCronJob] The cron job will be scheduled： {}.", jobInfo);
 
-  /** Used to check the status of other server. */
-  class ServerStatusChecker implements Runnable {
-    @Override
-    public void run() {
-      Optional<List<ServerInfo>> serverInfos = persistenceAdapter.queryServers();
-      if (!serverInfos.isPresent()) {
-        return;
-      }
+    long nextTriggerTime = jobInfo.getNextTriggerTime();
+    long delay = 0;
+    long now = Instant.now().toEpochMilli();
+    if (nextTriggerTime < now) {
+      LOG.warn(
+          "[Job-{}] schedule delay, expect: {}, current: {}",
+          jobInfo.getId(),
+          nextTriggerTime,
+          now);
+    } else {
+      delay = nextTriggerTime - now;
     }
+    hashedWheelTimer.schedule(
+        () -> {
+          eventBus.post(DispatchJobEvent.builder().build());
+        },
+        delay,
+        TimeUnit.MILLISECONDS);
+
+    refreshJob(jobInfo);
   }
 
-  /** Used to obtain the task that belongs to current server. */
-  class TaskAcquirer implements Runnable {
+  /**
+   * Schedule job that the type is workflow.
+   *
+   * @param jobInfo {@link JobInfo} instance.
+   */
+  private void scheduleWorkflow(JobInfo jobInfo) {}
+
+  /**
+   * Schedule job that the frequent execute.
+   *
+   * @param jobInfo {@link JobInfo} instance.
+   */
+  private void scheduleFrequentJob(JobInfo jobInfo) {}
+
+  /**
+   * Calculate the next scheduling time (ignoring repeated executions within 5S, that is, the
+   * smallest continuous execution interval in CRON mode is SCHEDULE_RATE ms)
+   *
+   * @param jobInfo {@link JobInfo} instance.
+   */
+  private void refreshJob(JobInfo jobInfo) {
+    Date nextTriggerTime =
+        calculateNextTriggerTime(
+            jobInfo.getNextTriggerTime(),
+            jobInfo.getTimeExpressionType(),
+            jobInfo.getTimeExpression());
+
+    if (nextTriggerTime == null) {
+      LOG.warn(
+          "[Job-{}] this job won't be scheduled anymore, system will set the status to DISABLE!",
+          jobInfo.getId());
+      jobInfo.setStatus(JobStatus.STOP.getStatus());
+    } else {
+      jobInfo.setNextTriggerTime(nextTriggerTime.getTime());
+    }
+    persistenceAdapter.saveJobInfo(jobInfo);
+  }
+
+  private InstanceInfo generateInstanceRecord(JobInfo jobInfo) {
+    return InstanceInfo.builder()
+        .id(IdGenerateUtil.generate())
+        .appId(jobInfo.getAppId())
+        .jobId(jobInfo.getId())
+        .jobParams(jobInfo.getJobParams())
+        .triggerTime(
+            calculateNextTriggerTime(
+                Instant.now().toEpochMilli(),
+                jobInfo.getTimeExpressionType(),
+                jobInfo.getTimeExpression()))
+        .status(WAITING_DISPATCH.getStatus())
+        .type(jobInfo.getStatus())
+        .retryTimes(0)
+        .build();
+  }
+
+  /**
+   * Returns the time of the next trigger that to be calculated by the time expression and the
+   * specific delay time.
+   *
+   * @param preTriggerTime last trigger time.
+   * @param timeExpressionType The time expression, CRON/API/FIX_RATE/FIX_DELAY
+   * @param timeExpression Concrete time delay, CRON/NULL/LONG/LONG
+   * @return The next trigger time.
+   */
+  public Date calculateNextTriggerTime(
+      @Nonnull Long preTriggerTime,
+      @Nonnull Integer timeExpressionType,
+      @Nonnull String timeExpression) {
+    switch (timeExpressionType) {
+      case ExpressionType.CRON:
+        try {
+          CronExpression ce = new CronExpression(timeExpression);
+          // NOTE: Take the maximum value to prevent continuous scheduling of unscheduled tasks for
+          // a long time (the original DISABLE task is suddenly opened, and if the maximum value is
+          // not taken, all past scheduling will be supplemented)
+          long benchmarkTime = Math.max(System.currentTimeMillis(), preTriggerTime);
+          return ce.getNextValidTimeAfter(new Date(benchmarkTime));
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }
+      case ExpressionType.API:
+      case ExpressionType.FIX_RATE:
+      case ExpressionType.FIX_DELAY:
+      default:
+        throw new IllegalArgumentException();
+    }
+  }
+  // ===================== SCHEDULERS =====================
+
+  /** Used to check the status of tasks that under the current server. */
+  class TasksStatusChecker implements Runnable {
     @Override
     public void run() {
       Stopwatch stopwatch = Stopwatch.createStarted();
@@ -227,6 +340,37 @@ public class SchedulerService {
             ExceptionUtil.stringifyException(e));
       }
       LOG.info("[TaskAcquirer] job check used {}", stopwatch.stop());
+    }
+  }
+
+  /** Used to obtain the task that belongs to current server. */
+  class TaskAcquirer implements Runnable {
+    @Override
+    public void run() {
+      Optional<List<JobInfo>> jobs =
+          persistenceAdapter.findJobByAppIdAndStatus(
+              Integer.parseInt(NetUtils.getLocalAddress().toString()), JobStatus.NEW.getStatus());
+      if (!jobs.isPresent()) {
+        return;
+      }
+
+      for (JobInfo jobInfo : jobs.get()) {
+        jobInfo.setStatus(JobStatus.RUNNING.getStatus());
+        try {
+          persistenceAdapter.updateJobInfo(jobInfo);
+        } catch (Exception e) {
+          LOG.error(
+              "[updateInstanceInfo] occur error, err: {}", ExceptionUtil.stringifyException(e));
+        }
+
+        try {
+          if (jobInfo.getTimeExpressionType() == ExpressionType.CRON) {
+            scheduleCronJob(jobInfo);
+          }
+        } catch (Exception e) {
+          LOG.error("[scheduleCronJob] schedule cron job failed.", e);
+        }
+      }
     }
   }
 

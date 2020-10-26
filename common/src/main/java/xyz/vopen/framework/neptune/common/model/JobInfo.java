@@ -41,7 +41,7 @@ public class JobInfo {
   private Integer instanceRetryNum;
   private Integer taskRetryNum;
 
-  /** 1 normal running, 2 stop */
+  /** 0 new 1 normal running, 2 stop */
   private Integer status;
   /** Next trigger time. */
   private Long nextTriggerTime;
@@ -68,8 +68,7 @@ public class JobInfo {
   private Date gmtCreate;
   private Date gmtUpdate;
 
-  public JobInfo() {
-  }
+  public JobInfo() {}
 
   public JobInfo(
       Long id,

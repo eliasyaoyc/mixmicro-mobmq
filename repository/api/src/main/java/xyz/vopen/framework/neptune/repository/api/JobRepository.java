@@ -60,4 +60,6 @@ public interface JobRepository extends BaseRepository {
    * @param jobId
    */
   void deleteJobInfos(Long jobId);
+
+  Optional<List<JobInfo>> findJobByAppIdAndStatus(long appId, int status);
 }

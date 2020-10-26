@@ -41,6 +41,10 @@ public class HashedWheelTimer implements Timer {
 
   private final ExecutorService taskProcessPool;
 
+  public static HashedWheelTimer defaultWheelTimer() {
+    return new HashedWheelTimer(1, 4096, Runtime.getRuntime().availableProcessors() * 2);
+  }
+
   public HashedWheelTimer(long tickDuration, int ticksPerWheel) {
     this(tickDuration, ticksPerWheel, 0);
   }
