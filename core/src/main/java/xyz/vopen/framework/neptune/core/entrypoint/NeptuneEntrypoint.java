@@ -64,6 +64,7 @@ public abstract class NeptuneEntrypoint implements AutoCloseableAsync, FatalErro
 
   private final AtomicBoolean isShutDown = new AtomicBoolean(false);
 
+
   {
     eventBus = new EventBus();
     EventRegister.registerEvent();
